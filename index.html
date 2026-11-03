@@ -326,7 +326,7 @@
 </div>
 
 <script>
-    // NUEVA URL IMPLEMENTADA - Acceso: Cualquier usuario
+    // URL FIJA - Ya lista
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxGYttBc8Aq1HhkZxhIYazlC_k4tP7GKJBtOb34foIXtyrmfvUctiN0o7szYfpoHXAS/exec';
     
     let db = []; 
@@ -358,27 +358,37 @@
         document.getElementById('detailModal').classList.remove('open');
     }
 
-    async function loadData() {
-        try {
-            const response = await fetch(`${SCRIPT_URL}?action=getData`);
-            const data = await response.json();
+    // CARGA DE DATOS USANDO JSONP PARA EVITAR BLOQUEOS CORS
+    function loadData() {
+        const script = document.createElement('script');
+        const callbackName = 'jsonpCallback_' + Math.round(100000 * Math.random());
+        
+        window[callbackName] = function(data) {
+            delete window[callbackName];
+            document.body.removeChild(script);
+            
             if (data && data.rows) {
                 db = data.rows;
                 initApp();
-            } else throw new Error();
-        } catch (e) {
-            console.error(e);
-            loadMockData(); // Fallback en caso de error
-        }
+            } else {
+                console.error("Formato de datos inválido desde Apps Script");
+                loadMockData();
+            }
+        };
+
+        script.src = `${SCRIPT_URL}?action=getData&callback=${callbackName}`;
+        script.onerror = function() {
+            console.error("Error conectando al script de Google");
+            loadMockData();
+        };
+        document.body.appendChild(script);
     }
 
     function loadMockData() {
         db = [
             {Fecha:"24/6/2026", Tecnico:"Eliseo Eliecer Gallardo Vargas", Codigo:"ACR00007", Descripcion:"ACCESORIO CONTROL REMOTO CHAMP", Virtual:3, Fisico:3, Diferencia:0, Mes:"JUNIO 2026"},
             {Fecha:"24/6/2026", Tecnico:"Eliseo Eliecer Gallardo Vargas", Codigo:"CCU00024", Descripcion:"CABLE COBRE UTP 4 PARES CAT 5E", Virtual:116, Fisico:0.12, Diferencia:115.88, Mes:"JUNIO 2026"},
-            {Fecha:"24/6/2026", Tecnico:"Eliseo Eliecer Gallardo Vargas", Codigo:"CCU00025", Descripcion:"CABLE COBRE UTP 2 PARES CAT 5E", Virtual:91, Fisico:98, Diferencia:-7, Mes:"JUNIO 2026"},
-            {Fecha:"24/6/2026", Tecnico:"Bastian Elias Jimenez Silva", Codigo:"MMU0032", Descripcion:"MINI MUFA PARA FCA", Virtual:3, Fisico:4, Diferencia:-1, Mes:"JUNIO 2026"},
-            {Fecha:"10/7/2026", Tecnico:"Bastian Elias Jimenez Silva", Codigo:"CCU00024", Descripcion:"CABLE COBRE UTP 4 PARES", Virtual:50, Fisico:40, Diferencia:10, Mes:"JULIO 2026"}
+            {Fecha:"24/6/2026", Tecnico:"Eliseo Eliecer Gallardo Vargas", Codigo:"CCU00025", Descripcion:"CABLE COBRE UTP 2 PARES CAT 5E", Virtual:91, Fisico:98, Diferencia:-7, Mes:"JUNIO 2026"}
         ];
         const badge = document.getElementById('syncStatus');
         badge.className = 'status-badge loading';
@@ -476,7 +486,7 @@
                 <td><strong>#${i+1}</strong></td><td>${t.nombre}</td><td>${getPill(t.b)}</td>
             </tr>`).join('');
 
-        // 4. Catálogo Full Materiales (Pestaña Análisis)
+        // 4. Catálogo Full Materiales
         const matMap = new Map();
         data.forEach(r => {
             if(!matMap.has(r.Codigo)) matMap.set(r.Codigo, {c:r.Codigo, d:r.Descripcion, n:0, b:0});
@@ -641,6 +651,9 @@
             <tbody>${matches.map(r => `<tr onclick="abrirDetalleTecnico('${r.Tecnico}')"><td><span class="pill-mes">${r.Mes}</span></td><td><strong>${r.Tecnico}</strong></td><td>${r.Codigo}</td><td>${formatNumber(r.Virtual)}</td><td>${formatNumber(r.Fisico)}</td><td>${getPill(r.Diferencia)}</td></tr>`).join('')}</tbody></table>`;
     }
     function limpiarBusqueda() { document.getElementById('globalSearchInput').value = ''; document.getElementById('searchResultCard').style.display = 'none'; }
+
+    // Iniciar
+    loadData();
 </script>
 </body>
 </html>

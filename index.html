@@ -3,31 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auditoría Bodegas Móviles · Dashboard Gerencial</title>
+    <title>Auditoría Bodegas Móviles · Dashboard BI</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         :root {
-            --primary: #1d6f9c;
-            --primary-dark: #124d6e;
-            --primary-light: #e8f2f8;
-            --bg-body: #f1f5f9;
-            --bg-card: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --danger: #dc2626;
-            --danger-bg: #fef2f2;
-            --success: #16a34a;
-            --success-bg: #f0fdf4;
-            --warning: #d97706;
-            --warning-bg: #fffbeb;
+            --primary: #1d6f9c; --primary-dark: #124d6e; --primary-light: #e8f2f8;
+            --bg-body: #f1f5f9; --bg-card: #ffffff; --text-main: #0f172a; --text-muted: #64748b;
+            --border: #e2e8f0; --danger: #dc2626; --danger-bg: #fef2f2;
+            --success: #16a34a; --success-bg: #f0fdf4; --warning: #d97706; --warning-bg: #fffbeb;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
         body { background: var(--bg-body); color: var(--text-main); padding-bottom: 40px; }
 
-        /* ===== CABECERA ===== */
-        .top-header { background: var(--bg-card); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03); }
+        .top-header { background: var(--bg-card); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
         .header-container { max-width: 1500px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
         .brand { display: flex; align-items: center; gap: 12px; }
         .brand-icon { background: var(--primary); color: white; width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
@@ -35,109 +23,50 @@
         .brand-text span { font-size: 13px; color: var(--text-muted); }
 
         .main-tabs { display: flex; background: #f1f5f9; padding: 5px; border-radius: 14px; gap: 4px; }
-        .tab-btn { border: none; background: transparent; padding: 9px 18px; border-radius: 10px; font-size: 14px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: 0.15s; display: flex; align-items: center; gap: 8px; }
-        .tab-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.5); }
+        .tab-btn { border: none; background: transparent; padding: 9px 18px; border-radius: 10px; font-size: 14px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: 0.15s; }
         .tab-btn.active { background: var(--bg-card); color: var(--primary); box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
 
         .status-badge { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 30px; font-size: 12px; font-weight: 700; background: var(--success-bg); color: var(--success); border: 1px solid #bbf7d0; }
-        .status-badge.loading { background: var(--warning-bg); color: var(--warning); border-color: #fde68a; }
+        .status-badge.demo { background: var(--warning-bg); color: var(--warning); border-color: #fde68a; }
 
-        /* ===== CONTENEDOR Y FILTROS ===== */
         .container { max-width: 1500px; margin: 20px auto 0; padding: 0 24px; }
-        
-        .onboarding-banner { background: linear-gradient(135deg, #1d6f9c 0%, #0f4c75 100%); color: white; border-radius: 16px; padding: 16px 22px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; box-shadow: 0 4px 15px rgba(29, 111, 156, 0.15); }
-        .onboarding-steps { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
-        .step-item { display: flex; align-items: center; gap: 10px; font-size: 14px; }
-        .step-num { background: rgba(255, 255, 255, 0.2); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; }
-        .btn-close-banner { background: rgba(255, 255, 255, 0.15); color: white; border: 1px solid rgba(255, 255, 255, 0.3); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; }
-        .btn-close-banner:hover { background: rgba(255, 255, 255, 0.25); }
-
         .filter-bar { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 14px 20px; margin-bottom: 22px; display: flex; align-items: center; flex-wrap: wrap; gap: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
-        .filter-group { display: flex; align-items: center; gap: 8px; }
-        .filter-group label { font-size: 13px; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
-        .filter-select, .search-input { padding: 8px 14px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 14px; color: var(--text-main); background: #f8fafc; outline: none; transition: 0.15s; }
-        .filter-select:focus, .search-input:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(29, 111, 156, 0.12); }
-        
-        .search-wrapper { flex: 1; min-width: 240px; position: relative; }
-        .search-input { width: 100%; padding-left: 36px; }
-        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--text-muted); }
-        .btn-reset { background: #f1f5f9; color: var(--text-main); border: 1px solid var(--border); padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.15s; }
-        .btn-reset:hover { background: #e2e8f0; }
+        .filter-select, .search-input { padding: 8px 14px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 14px; outline: none; flex: 1; min-width: 200px;}
+        .filter-select:focus, .search-input:focus { border-color: var(--primary); }
 
-        /* ===== TARJETAS Y GRID ===== */
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 22px; }
-        .kpi-card { background: var(--bg-card); border-radius: 16px; padding: 18px 20px; border: 1px solid var(--border); cursor: pointer; transition: all 0.18s; display: flex; flex-direction: column; justify-content: space-between; }
-        .kpi-card:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06); }
-        .kpi-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .kpi-label { font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); }
-        .kpi-value { font-size: 30px; font-weight: 800; margin-bottom: 6px; }
-        .kpi-footer { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-muted); padding-top: 8px; border-top: 1px dashed var(--border); }
-        .kpi-action { color: var(--primary); font-weight: 600; font-size: 12px; }
+        .kpi-card { background: var(--bg-card); border-radius: 16px; padding: 18px 20px; border: 1px solid var(--border); transition: 0.2s; }
+        .kpi-card:hover { transform: translateY(-2px); border-color: var(--primary); }
+        .kpi-label { font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; }
+        .kpi-value { font-size: 28px; font-weight: 800; }
 
-        .card { background: var(--bg-card); border-radius: 16px; padding: 20px 22px; border: 1px solid var(--border); margin-bottom: 22px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
-        .card-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-        .card-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
-        .grid-2col { display: grid; grid-template-columns: 1.4fr 1fr; gap: 22px; }
-        @media (max-width: 960px) { .grid-2col { grid-template-columns: 1fr; } }
+        .card { background: var(--bg-card); border-radius: 16px; padding: 20px; border: 1px solid var(--border); margin-bottom: 22px; }
+        .card-header { margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .card-title { font-size: 16px; font-weight: 700; }
+        .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
 
-        /* ===== ESTILOS TÉCNICOS ===== */
-        .tec-summary-boxes { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
-        .summary-box { padding: 14px 18px; border-radius: 12px; border: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: 0.15s; }
-        .summary-box.diff-box { background: #fff5f5; border-color: #fecaca; }
-        .summary-box.diff-box:hover { background: #fee2e2; }
-        .summary-box.ok-box { background: #f0fdf4; border-color: #bbf7d0; }
-        .summary-box.ok-box:hover { background: #dcfce7; }
-        .summary-box .num { font-size: 26px; font-weight: 800; }
-        
-        .tec-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-        .tec-chip { background: white; border: 1px solid var(--border); padding: 6px 14px; border-radius: 30px; font-size: 13px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.15s; }
-        .tec-chip:hover { border-color: var(--primary); background: var(--primary-light); }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { text-align: left; padding: 10px; background: #f8fafc; color: var(--text-muted); font-weight: 700; cursor: pointer; }
+        td { padding: 10px; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
+        tr:hover td { background: #f8fafc; }
 
-        /* ===== TABLAS ===== */
-        .table-wrapper { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-        th { text-align: left; padding: 10px 12px; background: #f8fafc; color: var(--text-muted); font-weight: 700; font-size: 12px; text-transform: uppercase; border-bottom: 2px solid var(--border); transition: background 0.15s; }
-        th.sortable { cursor: pointer; user-select: none; }
-        th.sortable:hover { background: #e2e8f0; color: var(--text-main); }
-        th.sortable::after { content: ' ↕'; font-size: 10px; color: #cbd5e1; margin-left: 4px; }
-        td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
-        tr:hover td { background: #f8fafc; cursor: pointer; }
-        
-        .btn-action { background: var(--primary-light); color: var(--primary); border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.15s; white-space: nowrap; }
-        .btn-action:hover { background: var(--primary); color: white; }
-
-        /* ===== PÍLDORAS ===== */
-        .pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+        .pill { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; white-space: nowrap; }
         .pill-faltante { background: var(--danger-bg); color: var(--danger); border: 1px solid #fecaca; }
         .pill-sobrante { background: var(--success-bg); color: var(--success); border: 1px solid #bbf7d0; }
         .pill-ok { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
-        .pill-mes { background: var(--primary-light); color: var(--primary); font-weight: 600; padding: 3px 10px; border-radius: 8px; font-size: 12px; }
 
-        /* ===== MODAL ===== */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(2px); display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px; }
-        .modal-overlay.open { display: flex; } 
-        .modal-window { background: white; width: 100%; max-width: 1050px; max-height: 88vh; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.25); display: flex; flex-direction: column; overflow: hidden; animation: modalIn 0.18s ease-out; }
-        @keyframes modalIn { from { transform: scale(0.96); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .modal-header { padding: 18px 24px; background: #f8fafc; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-        .modal-header h2 { font-size: 18px; font-weight: 700; color: var(--text-main); }
-        .btn-close-modal { background: #e2e8f0; border: none; padding: 7px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; color: var(--text-main); }
-        .btn-close-modal:hover { background: #cbd5e1; }
-        .modal-body { padding: 20px 24px; overflow-y: auto; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.6); display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px; }
+        .modal-overlay.open { display: flex; }
+        .modal-window { background: white; width: 100%; max-width: 900px; max-height: 85vh; border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; }
+        .modal-header { padding: 16px 20px; background: #f8fafc; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+        .modal-body { padding: 20px; overflow-y: auto; }
+        .btn-close { background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 600; cursor: pointer; }
 
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .chart-box { height: 250px; width: 100%; margin-top: 12px; }
-
-        /* Extras para Análisis */
-        .chip-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-        .chip-mat { background: var(--primary); color: white; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .chip-mat button { background: rgba(255,255,255,0.2); border: none; color: white; cursor: pointer; font-weight: bold; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; transition: 0.15s; }
-        .chip-mat button:hover { background: rgba(255,255,255,0.4); }
-
         .loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.9); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 16px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -145,717 +74,274 @@
 <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
     <h2 style="color:var(--primary); font-size:18px;">Conectando con Hoja Consolidada...</h2>
-    <p style="color:var(--text-muted); font-size:14px; margin-top:8px;">Extrayendo datos de auditorías de forma segura</p>
 </div>
 
 <header class="top-header">
     <div class="header-container">
         <div class="brand">
-            <div class="brand-icon">📦</div>
+            <div class="brand-icon">📊</div>
             <div class="brand-text">
                 <h1>Auditoría Bodegas Móviles</h1>
-                <span>Dashboard Gerencial (Inteligencia de Negocios)</span></div>
-            </div>
+                <span>Dashboard BI Analítico</span></div>
         </div>
-
         <nav class="main-tabs">
-            <button class="tab-btn active" id="tabBtnAuditoria" onclick="switchTab('auditoria')">📊 Resumen</button>
-            <button class="tab-btn" id="tabBtnAnalisis" onclick="switchTab('analisis')">📈 Análisis Avanzado</button>
-            <button class="tab-btn" id="tabBtnTecnicos" onclick="switchTab('tecnicos')">👥 Técnicos</button>
-            <button class="tab-btn" id="tabBtnHistorico" onclick="switchTab('historico')">📚 Histórico</button>
+            <button class="tab-btn active" onclick="switchTab('resumen', this)">📋 Resumen</button>
+            <button class="tab-btn" onclick="switchTab('analisis', this)">📈 BI & Análisis</button>
+            <button class="tab-btn" onclick="switchTab('tecnicos', this)">👥 Técnicos</button>
         </nav>
-
-        <div class="status-badge" id="syncStatus">
-            🟢 Conectado a Sheets
-        </div>
+        <div class="status-badge" id="syncStatus">🟢 Conectado</div>
     </div>
 </header>
 
 <main class="container">
     <div class="filter-bar">
-        <div class="filter-group">
-            <label>📅 Filtrar Período:</label>
-            <select id="mesGlobalSelect" class="filter-select" onchange="cambiarMesGlobal(this.value)">
-                <option value="ALL">Todos los períodos acumulados</option>
-            </select>
-        </div>
-        <div class="filter-group">
-            <label>👤 Ir a Técnico:</label>
-            <select id="tecnicoSelect" class="filter-select" onchange="if(this.value) abrirDetalleTecnico(this.value)">
-                <option value="">Seleccionar técnico...</option>
-            </select>
-        </div>
-        <div class="search-wrapper">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="globalSearchInput" class="search-input" placeholder="Buscar material o técnico en cualquier tabla..." oninput="ejecutarBusquedaGlobal(this.value)">
-        </div>
-        <button class="btn-reset" onclick="resetView()">🔄 Limpiar Filtros</button>
+        <select id="mesGlobalSelect" class="filter-select" onchange="renderAll()"><option value="ALL">Todos los períodos</option></select>
+        <input type="text" id="globalSearchInput" class="search-input" placeholder="🔍 Buscar material o técnico en todo el panel..." oninput="ejecutarBusqueda(this.value)">
     </div>
 
-    <!-- Resultados Búsqueda -->
-    <div class="card" id="searchResultCard" style="display:none; border-color: var(--primary);">
-        <div class="card-header">
-            <div class="card-title" id="searchResultTitle">🔍 Resultados de búsqueda</div>
-            <button class="btn-action" onclick="limpiarBusqueda()">Cerrar búsqueda ✕</button>
-        </div>
-        <div class="table-wrapper" id="searchResultBody"></div>
+    <div class="card" id="searchResultCard" style="display:none; border-color:var(--primary);">
+        <div class="card-header"><h3 id="searchResultTitle">Resultados</h3><button class="btn-close" onclick="limpiarBusqueda()">Cerrar</button></div>
+        <div style="overflow-x:auto;"><table id="searchTable"></table></div>
     </div>
 
-    <!-- 1. RESUMEN -->
-    <section id="tabAuditoriaContent" class="tab-content active">
+    <!-- TAB 1: RESUMEN -->
+    <section id="tab-resumen" class="tab-content active">
         <div class="kpi-grid" id="kpiContainer"></div>
-
-        <div class="card">
-            <div class="card-header">
-                <div>
-                    <div class="card-title">👥 Visión Rápida de Nómina</div>
-                    <div class="card-subtitle">Haz clic en una tarjeta o técnico para ver el detalle de sus descuadres</div>
-                </div>
-            </div>
-            <div class="tec-summary-boxes">
-                <div class="summary-box diff-box" onclick="filtrarTecnicosConDiff()">
-                    <div>
-                        <div style="font-size:13px; font-weight:700; color:var(--danger);">⚠️ TÉCNICOS CON DESCUADRE</div>
-                        <div style="font-size:12px; color:var(--text-muted);">Presentan fugas o sobras de inventario</div>
-                    </div>
-                    <div class="num" style="color:var(--danger);" id="tecConDiff">0</div>
-                </div>
-                <div class="summary-box ok-box" onclick="filtrarTecnicosSinDiff()">
-                    <div>
-                        <div style="font-size:13px; font-weight:700; color:var(--success);">✅ TÉCNICOS CUADRADOS</div>
-                        <div style="font-size:12px; color:var(--text-muted);">Stock físico coincide perfectamente con virtual</div>
-                    </div>
-                    <div class="num" style="color:var(--success);" id="tecSinDiff">0</div>
-                </div>
-            </div>
-            <div class="tec-chips" id="tecListContainer"></div>
-        </div>
-
         <div class="grid-2col">
             <div class="card">
-                <div class="card-header"><div class="card-title">📌 Prioridad de Descuadre (Materiales)</div></div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th class="sortable" onclick="sortTopTable('materiales', 'codigo')">Código</th>
-                                <th class="sortable" onclick="sortTopTable('materiales', 'desc')">Material</th>
-                                <th class="sortable" onclick="sortTopTable('materiales', 'dif')">Balance Priorizado</th>
-                            </tr>
-                        </thead>
-                        <tbody id="topItemsBody"></tbody>
-                    </table>
-                </div>
+                <div class="card-header"><span class="card-title">⚠️ Top Diferencias de Material</span></div>
+                <div style="overflow-x:auto;"><table id="topMaterialesTable"></table></div>
             </div>
             <div class="card">
-                <div class="card-header"><div class="card-title">🧑‍🔧 Prioridad de Intervención (Técnicos)</div></div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th class="sortable" onclick="sortTopTable('tecnicos', 'nombre')">Técnico</th>
-                                <th class="sortable" onclick="sortTopTable('tecnicos', 'dif')">Balance Acumulado</th>
-                            </tr>
-                        </thead>
-                        <tbody id="topTecnicosBody"></tbody>
-                    </table>
-                </div>
+                <div class="card-header"><span class="card-title">🧑‍🔧 Top Técnicos Descuadrados</span></div>
+                <div style="overflow-x:auto;"><table id="topTecnicosTable"></table></div>
             </div>
         </div>
     </section>
 
-    <!-- 2. ANÁLISIS AVANZADO BI -->
-    <section id="tabAnalisisContent" class="tab-content">
-        
-        <div class="card">
-            <div class="card-header">
-                <div class="card-title">📉 Historial Clínico por Material (Tipo Bolsa)</div>
-                <div class="card-subtitle">Compara la evolución del stock de múltiples ítems a través de los meses auditados</div>
-            </div>
-            <div class="filter-group" style="margin-bottom:10px;">
-                <select id="matEvolSelect" class="filter-select" onchange="addMaterialToChart()"></select>
-            </div>
-            <div class="chip-container" id="matChips"></div>
-            <div class="chart-box"><canvas id="evolChart"></canvas></div>
-        </div>
-
+    <!-- TAB 2: BI & ANALISIS -->
+    <section id="tab-analisis" class="tab-content">
         <div class="grid-2col">
             <div class="card">
-                <div class="card-header">
-                    <div class="card-title">📊 Fugas vs Sobras (Mensual)</div>
-                    <div class="card-subtitle">Volumen de desorden general del inventario por período</div>
-                </div>
-                <div class="chart-box"><canvas id="stackedBarChart"></canvas></div>
+                <div class="card-header"><span class="card-title">🚨 Top 5 Fugas de Stock (Materiales Perdidos)</span></div>
+                <div style="height:250px;"><canvas id="topFugasChart"></canvas></div>
             </div>
             <div class="card">
-                <div class="card-header">
-                    <div class="card-title">🚨 Top 5 Fugas Críticas</div>
-                    <div class="card-subtitle">Materiales que representan las mayores pérdidas operativas (solo faltantes)</div>
-                </div>
-                <div class="chart-box"><canvas id="topFugasChart"></canvas></div>
+                <div class="card-header"><span class="card-title">⚖️ Faltantes vs Sobrantes (Tendencia Mensual)</span></div>
+                <div style="height:250px;"><canvas id="fugasSobrasChart"></canvas></div>
             </div>
         </div>
-
         <div class="card">
             <div class="card-header">
-                <div class="card-title">📦 Catálogo Analítico de Materiales</div>
-                <div class="card-subtitle">Exploración detallada. Haz clic en las cabeceras para ordenar.</div>
-                <div class="search-wrapper" style="max-width: 300px;">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" class="search-input" placeholder="Buscar material..." oninput="filtrarTablaLocal('listaMaterialesFullBody', this.value)">
-                </div>
+                <span class="card-title">📈 Evolución Histórica de Material (Tipo Bolsa)</span>
+                <select id="matAnalisisSelect" class="filter-select" style="max-width:300px;" onchange="renderMaterialEvolucion()"></select>
             </div>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="sortable" onclick="sortFullTable('mat', 'codigo')">Código</th>
-                            <th class="sortable" onclick="sortFullTable('mat', 'desc')">Descripción</th>
-                            <th class="sortable" onclick="sortFullTable('mat', 'audit')">Auditorías Reales</th>
-                            <th class="sortable" onclick="sortFullTable('mat', 'dif')">Balance (Faltantes Arriba)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="listaMaterialesFullBody"></tbody>
-                </table>
-            </div>
+            <div style="height:250px;"><canvas id="matEvolucionChart"></canvas></div>
         </div>
     </section>
 
-    <!-- 3. TÉCNICOS -->
-    <section id="tabTecnicosContent" class="tab-content">
+    <!-- TAB 3: TECNICOS -->
+    <section id="tab-tecnicos" class="tab-content">
         <div class="card">
-            <div class="card-header">
-                <div class="card-title">👥 Directorio Completo de Desempeño</div>
-                <div class="search-wrapper" style="max-width: 300px;">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" class="search-input" placeholder="Buscar técnico..." oninput="filtrarTablaLocal('listaTecnicosBody', this.value)">
-                </div>
-            </div>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th class="sortable" onclick="sortFullTable('tec', 'nombre')">Nombre del Técnico</th>
-                            <th class="sortable" onclick="sortFullTable('tec', 'mes')">Último Mes Auditado</th>
-                            <th class="sortable" onclick="sortFullTable('tec', 'items')">Cant. Ítems Descuadrados</th>
-                            <th class="sortable" onclick="sortFullTable('tec', 'dif')">Balance de Fugas (Priorizado)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="listaTecnicosBody"></tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-
-    <!-- 4. HISTÓRICO -->
-    <section id="tabHistoricoContent" class="tab-content">
-        <div class="card">
-            <div class="card-header"><div class="card-title">📚 Registro General de Auditorías</div></div>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Período Auditado</th>
-                            <th>Técnicos Revisados</th>
-                            <th>Materiales Evaluados</th>
-                            <th>Total Virtual</th>
-                            <th>Total Físico</th>
-                            <th>Desviación Neta del Mes</th>
-                        </tr>
-                    </thead>
-                    <tbody id="historicoTableBody"></tbody>
-                </table>
-            </div>
+            <div class="card-header"><span class="card-title">👥 Listado Completo de Técnicos</span></div>
+            <div style="overflow-x:auto;"><table id="allTecnicosTable"></table></div>
         </div>
     </section>
 </main>
 
-<div class="modal-overlay" id="detailModal" onclick="if(event.target===this) cerrarModal()">
+<div class="modal-overlay" id="detailModal" onclick="if(event.target===this) document.getElementById('detailModal').classList.remove('open')">
     <div class="modal-window">
-        <div class="modal-header">
-            <h2 id="modalTitle">📋 Detalle de Intervención</h2>
-            <div style="display:flex; gap:10px; align-items:center;">
-                <input type="text" class="search-input" placeholder="Filtrar en detalle..." oninput="filtrarTablaLocal('modalTableBody', this.value)" style="padding: 6px 12px; font-size:12px;">
-                <button class="btn-close-modal" onclick="cerrarModal()">✖ Cerrar</button>
-            </div>
-        </div>
+        <div class="modal-header"><h2 id="modalTitle">Detalle</h2><button class="btn-close" onclick="document.getElementById('detailModal').classList.remove('open')">✖</button></div>
         <div class="modal-body" id="modalContent"></div>
     </div>
 </div>
 
 <script>
+    // URL OFICIAL Y ÚNICA DE TU BASE DE DATOS (CONSOLIDADO REDTEL)
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxGYttBc8Aq1HhkZxhIYazlC_k4tP7GKJBtOb34foIXtyrmfvUctiN0o7szYfpoHXAS/exec';
     
-    let db = []; 
-    let selectedMonth = 'ALL';
-    let charts = {};
-    let analysisMats = []; // Selected materials for evolution chart
-    
-    // Arrays para renderizado local con Sorting
-    let viewDataMats = []; 
-    let viewDataTecs = [];
-    let viewDataFullMats = [];
-    let viewDataFullTecs = [];
-    let currentSortState = { table: '', col: '', asc: true };
+    let db = [], charts = {};
 
-    function formatNumber(num) {
-        if(Math.abs(num) < 0.01) return "0";
-        return Number.isInteger(num) ? num.toString() : num.toFixed(2);
-    }
-
+    function formatNum(num) { return Math.abs(num) < 0.01 ? "0" : Number.isInteger(num) ? num.toString() : num.toFixed(2); }
     function getPill(val) {
-        const num = parseFloat(val) || 0;
-        if (Math.abs(num) < 0.01) return `<span class="pill pill-ok">✅ Cuadrado (0)</span>`;
-        if (num > 0) return `<span class="pill pill-faltante">🔴 Faltan ${formatNumber(num)}</span>`;
-        return `<span class="pill pill-sobrante">🟢 Sobran ${formatNumber(Math.abs(num))}</span>`;
+        if (Math.abs(val) < 0.01) return `<span class="pill pill-ok">✅ Cuadrado</span>`;
+        return val > 0 ? `<span class="pill pill-faltante">🔴 Faltan ${formatNum(val)}</span>` : `<span class="pill pill-sobrante">🟢 Sobran ${formatNum(Math.abs(val))}</span>`;
     }
 
-    // --- ALGORITMO DE ORDENACIÓN PRIORIZADO ---
-    // Regla de Oro: Faltantes (>0) primero, Sobrantes (<0) al medio, Cuadrados (0) al final.
-    // Dentro de cada grupo, ordena por magnitud (el peor arriba).
-    function prioritySortLogic(a, b) {
-        function getPriority(val) {
-            if (val > 0.01) return 1; // Faltante = Alta prioridad
-            if (val < -0.01) return 2; // Sobrante = Media prioridad
-            return 3; // Cuadrado = Baja prioridad
-        }
-        
-        let pA = getPriority(a);
-        let pB = getPriority(b);
-        
-        if (pA !== pB) return pA - pB;
-        return Math.abs(b) - Math.abs(a); // Si son de misma categoría, el de mayor magnitud va arriba
+    // Regla de Oro Estricta: Faltantes (rojo) > Sobrantes (verde) > Cuadrados (gris) ordenados por magnitud
+    function sortAlg(a, b) {
+        let vA = a.b !== undefined ? a.b : a.Diferencia;
+        let vB = b.b !== undefined ? b.b : b.Diferencia;
+        if (vA > 0 && vB <= 0) return -1;
+        if (vA <= 0 && vB > 0) return 1;
+        if (vA < 0 && vB === 0) return -1;
+        if (vA === 0 && vB < 0) return 1;
+        return Math.abs(vB) - Math.abs(vA); 
     }
 
-    function switchTab(tab) {
+    function switchTab(tab, btn) {
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}Content`).classList.add('active');
-        document.getElementById(`tabBtn${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
-        
-        if(tab === 'analisis') renderAnalisisAvanzado();
+        document.getElementById(`tab-${tab}`).classList.add('active');
+        btn.classList.add('active');
     }
 
-    function cerrarModal() {
-        document.getElementById('detailModal').classList.remove('open');
-    }
-
-    // CARGA DE DATOS CON JSONP
     function loadData() {
         const script = document.createElement('script');
-        const callbackName = 'jsonpCallback_' + Math.round(100000 * Math.random());
+        const cb = 'jsonp_' + Math.round(10000 * Math.random());
         
-        window[callbackName] = function(data) {
-            delete window[callbackName];
+        // Salvavidas de 2.5s si bloquean la vista previa. (En GitHub no saltará)
+        const fallback = setTimeout(() => {
+            console.warn("Bloqueo detectado. Activando entorno de prueba visual.");
+            document.getElementById('syncStatus').className = 'status-badge demo';
+            document.getElementById('syncStatus').innerHTML = '⚠️ Modo de Prueba Activo';
+            loadMockData();
+        }, 2500);
+
+        window[cb] = function(data) {
+            clearTimeout(fallback);
+            delete window[cb];
             document.body.removeChild(script);
-            if (data && data.rows) {
-                db = data.rows;
-                initApp();
-            } else {
-                loadMockData();
-            }
+            if (data && data.rows) { db = data.rows; initApp(); }
         };
-        script.src = `${SCRIPT_URL}?action=getData&callback=${callbackName}`;
-        script.onerror = function() { loadMockData(); };
+        script.src = `${SCRIPT_URL}?action=getData&callback=${cb}`;
         document.body.appendChild(script);
     }
 
     function loadMockData() {
         db = [
-            {Fecha:"24/6/2026", Tecnico:"Eliseo Eliecer Gallardo Vargas", Codigo:"ACR00007", Descripcion:"ACCESORIO CONTROL", Virtual:3, Fisico:3, Diferencia:0, Mes:"JUNIO 2026"},
-            {Fecha:"24/6/2026", Tecnico:"Eliseo Eliecer Gallardo Vargas", Codigo:"CCU00024", Descripcion:"CABLE COBRE UTP", Virtual:116, Fisico:0, Diferencia:116, Mes:"JUNIO 2026"},
-            {Fecha:"24/6/2026", Tecnico:"Eliseo Eliecer Gallardo Vargas", Codigo:"CCU00025", Descripcion:"CABLE COBRE UTP 2", Virtual:91, Fisico:98, Diferencia:-7, Mes:"JUNIO 2026"},
-            {Fecha:"10/7/2026", Tecnico:"Bastian Elias Jimenez Silva", Codigo:"CCU00024", Descripcion:"CABLE COBRE UTP", Virtual:50, Fisico:40, Diferencia:10, Mes:"JULIO 2026"},
-            {Fecha:"10/7/2026", Tecnico:"Bastian Elias Jimenez Silva", Codigo:"MMU0032", Descripcion:"MINI MUFA PARA FCA", Virtual:3, Fisico:8, Diferencia:-5, Mes:"JULIO 2026"}
+            {Mes:"MAY 2026", Tecnico:"Byron Valenzuela", Codigo:"CFD06436", Descripcion:"CABLE FO DROP", Virtual:500, Fisico:400, Diferencia:100},
+            {Mes:"MAY 2026", Tecnico:"David Molina", Codigo:"CCU00024", Descripcion:"CABLE COBRE UTP", Virtual:300, Fisico:350, Diferencia:-50},
+            {Mes:"JUN 2026", Tecnico:"Byron Valenzuela", Codigo:"CFD06436", Descripcion:"CABLE FO DROP", Virtual:600, Fisico:450, Diferencia:150},
+            {Mes:"JUN 2026", Tecnico:"Eliseo Gallardo", Codigo:"CCU00024", Descripcion:"CABLE COBRE UTP", Virtual:200, Fisico:100, Diferencia:100},
+            {Mes:"JUL 2026", Tecnico:"Eliseo Gallardo", Codigo:"CFD06436", Descripcion:"CABLE FO DROP", Virtual:400, Fisico:200, Diferencia:200},
+            {Mes:"JUL 2026", Tecnico:"David Molina", Codigo:"EGO04855", Descripcion:"EQUIPO GPON", Virtual:10, Fisico:10, Diferencia:0}
         ];
-        document.getElementById('syncStatus').innerHTML = '⚠️ MODO DEMO';
-        document.getElementById('syncStatus').className = 'status-badge loading';
         initApp();
     }
 
     function initApp() {
         const meses = [...new Set(db.map(r => r.Mes))].sort().reverse();
         const sel = document.getElementById('mesGlobalSelect');
-        sel.innerHTML = '<option value="ALL">Todos los períodos acumulados</option>';
         meses.forEach(m => sel.innerHTML += `<option value="${m}">${m}</option>`);
-        document.getElementById('loadingOverlay').style.display = 'none';
         
-        renderGlobal();
-        if (document.getElementById('tabAnalisisContent').classList.contains('active')) {
-            renderAnalisisAvanzado();
-        }
+        const matSel = document.getElementById('matAnalisisSelect');
+        const mats = [...new Set(db.map(r => r.Codigo))].sort();
+        mats.forEach(m => matSel.innerHTML += `<option value="${m}">${m} - ${db.find(x=>x.Codigo===m).Descripcion.substring(0,30)}</option>`);
+        
+        document.getElementById('loadingOverlay').style.display = 'none';
+        renderAll();
     }
 
-    function cambiarMesGlobal(mes) { selectedMonth = mes; renderGlobal(); }
-    function resetView() { selectedMonth = 'ALL'; document.getElementById('mesGlobalSelect').value = 'ALL'; limpiarBusqueda(); switchTab('auditoria'); renderGlobal(); }
+    function renderAll() {
+        const mes = document.getElementById('mesGlobalSelect').value;
+        const data = mes === 'ALL' ? db : db.filter(r => r.Mes === mes);
 
-    function getActiveData() { return selectedMonth === 'ALL' ? db : db.filter(r => r.Mes === selectedMonth); }
-
-    function renderGlobal() {
-        const data = getActiveData();
-        
         // KPIs
-        const v = data.reduce((s,r)=>s+r.Virtual,0);
-        const f = data.reduce((s,r)=>s+r.Fisico,0);
-        const uniqueItems = new Set(data.map(r=>r.Codigo)).size;
-        const diffs = data.filter(r=>Math.abs(r.Diferencia)>0.01).length;
-
+        const v = data.reduce((s,r)=>s+r.Virtual,0), f = data.reduce((s,r)=>s+r.Fisico,0);
         document.getElementById('kpiContainer').innerHTML = `
-            <div class="kpi-card" onclick="document.getElementById('tabBtnAnalisis').click()">
-                <div class="kpi-top"><span class="kpi-label">Materiales Auditados</span></div>
-                <div class="kpi-value">${uniqueItems}</div>
-                <div class="kpi-footer"><span>${data.length} reg.</span><span class="kpi-action">Ver Análisis BI →</span></div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-top"><span class="kpi-label">Stock (Virtual / Físico)</span></div>
-                <div class="kpi-value">${formatNumber(v)} <span style="font-size:16px;color:#94a3b8;">/ ${formatNumber(f)}</span></div>
-            </div>
-            <div class="kpi-card" onclick="filtrarDiferencia()">
-                <div class="kpi-top"><span class="kpi-label">Balance Neto General</span></div>
-                <div class="kpi-value">${getPill(v-f)}</div>
-                <div class="kpi-footer"><span>Ver lista completa de desviaciones →</span></div>
-            </div>
-            <div class="kpi-card" onclick="filtrarDiferencia()" style="background:var(--primary-light); border-color:var(--primary);">
-                <div class="kpi-top"><span class="kpi-label" style="color:var(--primary-dark);">Registros con Diferencia</span></div>
-                <div class="kpi-value" style="color:var(--primary-dark);">${diffs}</div>
-                <div class="kpi-footer"><span style="color:var(--primary-dark);">Errores detectados</span></div>
-            </div>
+            <div class="kpi-card"><div class="kpi-label">Materiales Auditados</div><div class="kpi-value">${new Set(data.map(r=>r.Codigo)).size}</div></div>
+            <div class="kpi-card"><div class="kpi-label">Balance Neto</div><div class="kpi-value">${getPill(v-f)}</div></div>
+            <div class="kpi-card"><div class="kpi-label">Ítems con Fugas (Rojos)</div><div class="kpi-value" style="color:var(--danger)">${data.filter(r=>r.Diferencia>0).length}</div></div>
         `;
 
-        // Agrupación Técnicos (Para Resumen)
-        const tecMap = new Map();
+        // Agrupación de datos
+        const matMap = new Map(), tecMap = new Map();
         data.forEach(r => {
-            if(!tecMap.has(r.Tecnico)) tecMap.set(r.Tecnico, {nombre:r.Tecnico, b:0, cD:0});
-            let t = tecMap.get(r.Tecnico);
-            t.b+=r.Diferencia;
-            if(Math.abs(r.Diferencia)>0.01) t.cD++;
-        });
-        const tecArr = Array.from(tecMap.values());
-        
-        document.getElementById('tecConDiff').textContent = tecArr.filter(t=>t.cD>0).length;
-        document.getElementById('tecSinDiff').textContent = tecArr.filter(t=>t.cD===0).length;
-        
-        // Default Priority Sort para Técnicos
-        viewDataTecs = tecArr.sort((a,b) => prioritySortLogic(a.b, b.b));
-        
-        document.getElementById('tecListContainer').innerHTML = viewDataTecs.map(t => `
-            <div class="tec-chip" onclick="abrirDetalleTecnico('${t.nombre}')">👤 ${t.nombre} ${getPill(t.b)}</div>
-        `).join('');
-
-        const selTec = document.getElementById('tecnicoSelect');
-        selTec.innerHTML = '<option value="">Seleccionar técnico...</option>' + tecArr.sort((a,b)=>a.nombre.localeCompare(b.nombre)).map(t => `<option value="${t.nombre}">${t.nombre}</option>`).join('');
-
-        // Agrupación Materiales (Para Resumen Top)
-        const matSumMap = new Map();
-        data.forEach(r => {
-            if(!matSumMap.has(r.Codigo)) matSumMap.set(r.Codigo, {c:r.Codigo, d:r.Descripcion, b:0});
-            matSumMap.get(r.Codigo).b += r.Diferencia;
-        });
-        
-        // Default Priority Sort para Materiales
-        viewDataMats = Array.from(matSumMap.values()).sort((a,b) => prioritySortLogic(a.b, b.b));
-        
-        renderResumenTables();
-        renderTablasCompletas(data);
-        renderHistorico();
-    }
-
-    // --- RENDER TABLES CON SORTING ---
-    function renderResumenTables() {
-        document.getElementById('topItemsBody').innerHTML = viewDataMats.slice(0,10).map(r => `
-            <tr onclick="abrirDetalleCodigo('${r.c}')">
-                <td><strong>${r.c}</strong></td><td>${r.d}</td><td>${getPill(r.b)}</td>
-            </tr>`).join('');
-
-        document.getElementById('topTecnicosBody').innerHTML = viewDataTecs.slice(0,10).map((t,i) => `
-            <tr onclick="abrirDetalleTecnico('${t.nombre}')">
-                <td><strong>#${i+1}</strong></td><td>${t.nombre}</td><td>${getPill(t.b)}</td>
-            </tr>`).join('');
-    }
-
-    function sortTopTable(type, col) {
-        let arr = type === 'materiales' ? viewDataMats : viewDataTecs;
-        
-        if(col === 'codigo' || col === 'nombre') {
-            arr.sort((a,b) => (a.c||a.nombre).localeCompare(b.c||b.nombre));
-        } else if(col === 'desc') {
-            arr.sort((a,b) => a.d.localeCompare(b.d));
-        } else if(col === 'dif') {
-            // Restore strict priority sorting logic
-            arr.sort((a,b) => prioritySortLogic(a.b, b.b));
-        }
-        renderResumenTables();
-    }
-
-    function renderTablasCompletas(data) {
-        // Preparar Full Mats
-        const matMap = new Map();
-        data.forEach(r => {
-            if(!matMap.has(r.Codigo)) matMap.set(r.Codigo, {c:r.Codigo, d:r.Descripcion, n:0, b:0});
-            let m = matMap.get(r.Codigo); m.n++; m.b+=r.Diferencia;
-        });
-        viewDataFullMats = Array.from(matMap.values()).sort((a,b) => prioritySortLogic(a.b, b.b));
-        
-        // Preparar Full Tecs
-        const tecMapF = new Map();
-        db.forEach(r => { // Tecs list is always full DB context
-            if(!tecMapF.has(r.Tecnico)) tecMapF.set(r.Tecnico, {n:r.Tecnico, m:r.Mes, cD:0, b:0});
-            let t = tecMapF.get(r.Tecnico);
-            t.b+=r.Diferencia;
-            if(Math.abs(r.Diferencia)>0.01) t.cD++;
-            if(r.Mes > t.m) t.m = r.Mes; 
-        });
-        viewDataFullTecs = Array.from(tecMapF.values()).sort((a,b) => prioritySortLogic(a.b, b.b));
-
-        dibujarTablaFullMats();
-        dibujarTablaFullTecs();
-    }
-
-    function dibujarTablaFullMats() {
-        document.getElementById('listaMaterialesFullBody').innerHTML = viewDataFullMats.map(m => `
-            <tr onclick="abrirDetalleCodigo('${m.c}')">
-                <td><strong>${m.c}</strong></td><td>${m.d}</td><td>${m.n}</td><td>${getPill(m.b)}</td>
-            </tr>`).join('');
-    }
-
-    function dibujarTablaFullTecs() {
-        document.getElementById('listaTecnicosBody').innerHTML = viewDataFullTecs.map((t,i) => `
-            <tr onclick="abrirDetalleTecnico('${t.n}')">
-                <td>${i+1}</td><td><strong>${t.n}</strong></td><td><span class="pill-mes">${t.m}</span></td><td>${t.cD}</td><td>${getPill(t.b)}</td>
-            </tr>`).join('');
-    }
-
-    function sortFullTable(type, col) {
-        let arr = type === 'mat' ? viewDataFullMats : viewDataFullTecs;
-        
-        if (col === 'dif') {
-            arr.sort((a,b) => prioritySortLogic(a.b, b.b));
-        } else if (col === 'codigo' || col === 'nombre') {
-            arr.sort((a,b) => (a.c||a.n).localeCompare(b.c||b.n));
-        } else if (col === 'desc' || col === 'mes') {
-            arr.sort((a,b) => (a.d||a.m).localeCompare(b.d||b.m));
-        } else if (col === 'audit' || col === 'items') {
-            arr.sort((a,b) => (b.n || b.cD) - (a.n || a.cD));
-        }
-
-        type === 'mat' ? dibujarTablaFullMats() : dibujarTablaFullTecs();
-    }
-
-    // --- ANÁLISIS AVANZADO (NUEVAS HERRAMIENTAS BI) ---
-    function renderAnalisisAvanzado() {
-        const fullData = db; // Always analyze global data over time
-        const meses = [...new Set(fullData.map(r => r.Mes))].sort();
-
-        // 1. Stacked Bar Chart (Fugas vs Sobras)
-        let faltantesPorMes = {};
-        let sobrantesPorMes = {};
-        meses.forEach(m => { faltantesPorMes[m] = 0; sobrantesPorMes[m] = 0; });
-        
-        fullData.forEach(r => {
-            if (r.Diferencia > 0) faltantesPorMes[r.Mes] += r.Diferencia;
-            else if (r.Diferencia < 0) sobrantesPorMes[r.Mes] += Math.abs(r.Diferencia); // Guardar como positivo para graficar abajo
+            if(!matMap.has(r.Codigo)) matMap.set(r.Codigo, {c:r.Codigo, d:r.Descripcion, b:0});
+            if(!tecMap.has(r.Tecnico)) tecMap.set(r.Tecnico, {n:r.Tecnico, b:0, c:0});
+            matMap.get(r.Codigo).b += r.Diferencia;
+            tecMap.get(r.Tecnico).b += r.Diferencia;
+            tecMap.get(r.Tecnico).c++;
         });
 
+        // Tablas Top 10 (Aplicando Orden Algorítmico Estricto)
+        const matArr = Array.from(matMap.values()).sort(sortAlg);
+        document.getElementById('topMaterialesTable').innerHTML = `<thead><tr><th>Código</th><th>Material</th><th>Balance</th></tr></thead><tbody>` + 
+            matArr.slice(0,10).map(m => `<tr onclick="abrirMat('${m.c}')"><td><strong>${m.c}</strong></td><td>${m.d}</td><td>${getPill(m.b)}</td></tr>`).join('') + `</tbody>`;
+
+        const tecArr = Array.from(tecMap.values()).sort(sortAlg);
+        document.getElementById('topTecnicosTable').innerHTML = `<thead><tr><th>Técnico</th><th>Balance</th></tr></thead><tbody>` + 
+            tecArr.slice(0,10).map(t => `<tr onclick="abrirTec('${t.n}')"><td><strong>${t.n}</strong></td><td>${getPill(t.b)}</td></tr>`).join('') + `</tbody>`;
+
+        document.getElementById('allTecnicosTable').innerHTML = `<thead><tr><th>Técnico</th><th>Ítems Auditados</th><th>Balance</th></tr></thead><tbody>` + 
+            tecArr.map(t => `<tr onclick="abrirTec('${t.n}')"><td><strong>${t.n}</strong></td><td>${t.c}</td><td>${getPill(t.b)}</td></tr>`).join('') + `</tbody>`;
+
+        renderCharts(data, matArr);
+        renderMaterialEvolucion();
+    }
+
+    function renderCharts(data, matArr) {
+        // Top 5 Fugas (Faltantes más críticos)
+        const fugas = matArr.filter(m => m.b > 0).sort((a,b)=>b.b - a.b).slice(0,5);
+        if(charts.fugas) charts.fugas.destroy();
+        charts.fugas = new Chart(document.getElementById('topFugasChart'), {
+            type: 'bar', data: { labels: fugas.map(f=>f.c), datasets: [{ label:'Unidades Perdidas', data: fugas.map(f=>f.b), backgroundColor: '#dc2626' }] },
+            options: { indexAxis: 'y', responsive:true, maintainAspectRatio:false }
+        });
+
+        // Comparativa Multimes Fugas vs Sobras (Stacked)
+        const meses = [...new Set(db.map(r=>r.Mes))].sort();
+        const fMes = [], sMes = [];
+        meses.forEach(m => {
+            const mData = db.filter(r=>r.Mes===m);
+            fMes.push(mData.filter(r=>r.Diferencia>0).reduce((s,r)=>s+r.Diferencia,0));
+            sMes.push(mData.filter(r=>r.Diferencia<0).reduce((s,r)=>s+Math.abs(r.Diferencia),0));
+        });
+        
         if(charts.stacked) charts.stacked.destroy();
-        charts.stacked = new Chart(document.getElementById('stackedBarChart'), {
-            type: 'bar',
-            data: {
-                labels: meses,
-                datasets: [
-                    { label: '🔴 Fugas (Pérdidas)', data: meses.map(m => faltantesPorMes[m]), backgroundColor: '#ef4444' },
-                    { label: '🟢 Sobrantes (Exceso)', data: meses.map(m => -sobrantesPorMes[m]), backgroundColor: '#22c55e' } // Negativo para que apunte hacia abajo
-                ]
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                scales: { 
-                    x: { stacked: true, grid: { display: false } }, 
-                    y: { stacked: true, beginAtZero: true } 
-                },
-                plugins: {
-                    tooltip: { callbacks: { label: (ctx) => `Unidades: ${Math.abs(ctx.raw).toFixed(1)}` } }
-                }
-            }
+        charts.stacked = new Chart(document.getElementById('fugasSobrasChart'), {
+            type: 'bar', data: { labels: meses, datasets: [
+                { label:'Fugas (Faltan)', data: fMes, backgroundColor: '#dc2626' },
+                { label:'Excesos (Sobran)', data: sMes, backgroundColor: '#16a34a' }
+            ]}, options: { responsive:true, maintainAspectRatio:false, scales: { x: {stacked:true}, y: {stacked:true} } }
         });
+    }
 
-        // 2. Evolución Multi-Material (Select & Line Chart)
-        const uniqueMats = [...new Set(db.map(r => r.Codigo))].sort();
-        document.getElementById('matEvolSelect').innerHTML = '<option value="">Añadir material al gráfico para comparar...</option>' + uniqueMats.map(m => `<option value="${m}">${m}</option>`).join('');
+    function renderMaterialEvolucion() {
+        const cod = document.getElementById('matAnalisisSelect').value;
+        if(!cod) return;
+        const meses = [...new Set(db.map(r=>r.Mes))].sort();
+        const dataMes = meses.map(m => db.filter(r=>r.Mes===m && r.Codigo===cod).reduce((s,r)=>s+r.Diferencia,0));
         
-        if (analysisMats.length === 0 && uniqueMats.length > 0) {
-            // Auto-select the top missing material for preview
-            const topMat = viewDataFullMats.find(m => m.b > 0);
-            if(topMat) analysisMats.push(topMat.c);
-        }
-        renderEvolucionMateriales();
-
-        // 3. Top 5 Fugas Críticas (Horizontal Bar)
-        const matFugas = new Map();
-        getActiveData().forEach(r => {
-            if(r.Diferencia > 0) {
-                if(!matFugas.has(r.Codigo)) matFugas.set(r.Codigo, 0);
-                matFugas.set(r.Codigo, matFugas.get(r.Codigo) + r.Diferencia);
-            }
-        });
-        const top5 = Array.from(matFugas.entries()).sort((a,b)=>b[1]-a[1]).slice(0,5);
-        
-        if(charts.topFugas) charts.topFugas.destroy();
-        charts.topFugas = new Chart(document.getElementById('topFugasChart'), {
-            type: 'bar',
-            data: {
-                labels: top5.map(t => t[0]),
-                datasets: [{ label: 'Total Unidades Perdidas', data: top5.map(t => t[1]), backgroundColor: '#dc2626', borderRadius: 4 }]
-            },
-            options: { 
-                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { display: false } }
-            }
+        if(charts.matEvol) charts.matEvol.destroy();
+        charts.matEvol = new Chart(document.getElementById('matEvolucionChart'), {
+            type: 'line', data: { labels: meses, datasets: [{ label:`Evolución de Descuadre para: ${cod}`, data: dataMes, borderColor: '#1d6f9c', backgroundColor:'rgba(29,111,156,0.1)', fill:true, tension:0.3, borderWidth: 3 }] },
+            options: { responsive:true, maintainAspectRatio:false }
         });
     }
 
-    function addMaterialToChart() {
-        const val = document.getElementById('matEvolSelect').value;
-        if(val && !analysisMats.includes(val)) {
-            analysisMats.push(val);
-            renderEvolucionMateriales();
-        }
+    // Buscador Global Integrado
+    function ejecutarBusqueda(q) {
+        q = q.trim().toLowerCase();
+        const card = document.getElementById('searchResultCard');
+        if(!q) { card.style.display = 'none'; return; }
+        const matches = db.filter(r => (r.Tecnico&&r.Tecnico.toLowerCase().includes(q)) || (r.Codigo&&r.Codigo.toLowerCase().includes(q)) || (r.Descripcion&&r.Descripcion.toLowerCase().includes(q))).sort(sortAlg).slice(0,25);
+        card.style.display = 'block';
+        document.getElementById('searchTable').innerHTML = `<thead><tr><th>Mes</th><th>Técnico</th><th>Código</th><th>Balance</th></tr></thead><tbody>` +
+            matches.map(r => `<tr onclick="abrirTec('${r.Tecnico}')"><td>${r.Mes}</td><td><strong>${r.Tecnico}</strong></td><td>${r.Codigo}</td><td>${getPill(r.Diferencia)}</td></tr>`).join('') + `</tbody>`;
     }
-    function removeMaterial(mat) {
-        analysisMats = analysisMats.filter(m => m !== mat);
-        renderEvolucionMateriales();
+    function limpiarBusqueda() { document.getElementById('globalSearchInput').value=''; document.getElementById('searchResultCard').style.display='none'; }
+
+    // Modales de Cruce de Información (Drill-down)
+    function abrirTec(nombre) {
+        const rows = db.filter(r => r.Tecnico === nombre && (document.getElementById('mesGlobalSelect').value === 'ALL' || r.Mes === document.getElementById('mesGlobalSelect').value)).sort(sortAlg);
+        let html = `<h3>Balance Total: ${getPill(rows.reduce((s,r)=>s+r.Diferencia,0))}</h3><table style="margin-top:10px"><thead><tr><th>Mes</th><th>Código</th><th>Material</th><th>Balance</th></tr></thead><tbody>` +
+            rows.map(r => `<tr onclick="abrirMat('${r.Codigo}')"><td>${r.Mes}</td><td><strong>${r.Codigo}</strong></td><td>${r.Descripcion}</td><td>${getPill(r.Diferencia)}</td></tr>`).join('') + `</tbody></table>`;
+        document.getElementById('modalTitle').innerText = `👤 Desempeño: ${nombre}`;
+        document.getElementById('modalContent').innerHTML = html;
+        document.getElementById('detailModal').classList.add('open');
     }
-
-    function renderEvolucionMateriales() {
-        document.getElementById('matChips').innerHTML = analysisMats.map(m => `<div class="chip-mat">${m} <button onclick="removeMaterial('${m}')">×</button></div>`).join('');
-        
-        const meses = [...new Set(db.map(r => r.Mes))].sort();
-        const colors = ['#1d6f9c', '#d97706', '#7e22ce', '#db2777', '#059669', '#14b8a6'];
-        
-        const datasets = analysisMats.map((mat, idx) => {
-            const dataPorMes = meses.map(m => {
-                const records = db.filter(r => r.Mes === m && r.Codigo === mat);
-                return records.reduce((sum, r) => sum + r.Diferencia, 0);
-            });
-            return {
-                label: mat,
-                data: dataPorMes,
-                borderColor: colors[idx % colors.length],
-                backgroundColor: colors[idx % colors.length],
-                tension: 0.2, borderWidth: 3, pointRadius: 4
-            };
-        });
-
-        if(charts.evol) charts.evol.destroy();
-        charts.evol = new Chart(document.getElementById('evolChart'), {
-            type: 'line',
-            data: { labels: meses, datasets: datasets },
-            options: { 
-                responsive: true, maintainAspectRatio: false,
-                plugins: { tooltip: { mode: 'index', intersect: false } }
-            }
-        });
-    }
-
-    function renderHistorico() {
-        const map = new Map();
-        db.forEach(r => {
-            if(!map.has(r.Mes)) map.set(r.Mes, {m:r.Mes, tec:new Set(), mat:new Set(), v:0, f:0, b:0});
-            let h = map.get(r.Mes);
-            h.tec.add(r.Tecnico); h.mat.add(r.Codigo);
-            h.v+=r.Virtual; h.f+=r.Fisico; h.b+=r.Diferencia;
-        });
-        const arr = Array.from(map.values()).sort((a,b)=>b.m.localeCompare(a.m));
-        document.getElementById('historicoTableBody').innerHTML = arr.map(h => `
-            <tr onclick="cambiarMesGlobal('${h.m}'); switchTab('auditoria');">
-                <td><span class="pill-mes">${h.m}</span></td><td>${h.tec.size}</td><td>${h.mat.size}</td><td>${formatNumber(h.v)}</td><td>${formatNumber(h.f)}</td><td>${getPill(h.b)}</td>
-            </tr>`).join('');
-    }
-
-    // --- MODALES Y BÚSQUEDAS EN TABLAS ---
-    function abrirModal(titulo, html) {
-        document.getElementById('modalTitle').innerHTML = titulo;
+    function abrirMat(cod) {
+        const rows = db.filter(r => r.Codigo === cod).sort(sortAlg);
+        let html = `<h3>Descuadre Histórico: ${getPill(rows.reduce((s,r)=>s+r.Diferencia,0))}</h3><table style="margin-top:10px"><thead><tr><th>Mes</th><th>Técnico Auditado</th><th>Balance</th></tr></thead><tbody>` +
+            rows.map(r => `<tr onclick="abrirTec('${r.Tecnico}')"><td>${r.Mes}</td><td><strong>${r.Tecnico}</strong></td><td>${getPill(r.Diferencia)}</td></tr>`).join('') + `</tbody></table>`;
+        document.getElementById('modalTitle').innerText = `📦 Trazabilidad: ${cod}`;
         document.getElementById('modalContent').innerHTML = html;
         document.getElementById('detailModal').classList.add('open');
     }
 
-    function abrirDetalleTecnico(nombre) {
-        const rawRows = getActiveData().filter(r => r.Tecnico === nombre);
-        const rows = rawRows.sort((a,b) => prioritySortLogic(a.Diferencia, b.Diferencia));
-        if(!rows.length) return;
-        
-        let html = `<div style="background:#f8fafc; padding:14px; border-radius:12px; margin-bottom:16px;">
-            <strong>Período:</strong> ${selectedMonth} · <strong>Balance:</strong> ${getPill(rows.reduce((s,r)=>s+r.Diferencia,0))}
-        </div>
-        <table style="width:100%;"><thead><tr><th>Mes</th><th>Código</th><th>Material</th><th>Virtual</th><th>Físico</th><th>Diferencia</th></tr></thead><tbody id="modalTableBody">`;
-        html += rows.map(r => `<tr onclick="abrirDetalleCodigo('${r.Codigo}')">
-            <td><span class="pill-mes">${r.Mes}</span></td><td><strong>${r.Codigo}</strong></td><td>${r.Descripcion}</td><td>${formatNumber(r.Virtual)}</td><td>${formatNumber(r.Fisico)}</td><td>${getPill(r.Diferencia)}</td>
-        </tr>`).join('');
-        html += `</tbody></table>`;
-        abrirModal(`👤 Auditoría de: ${nombre}`, html);
-    }
-
-    function abrirDetalleCodigo(codigo) {
-        const rawRows = getActiveData().filter(r => r.Codigo === codigo);
-        const rows = rawRows.sort((a,b) => prioritySortLogic(a.Diferencia, b.Diferencia));
-        if(!rows.length) return;
-        
-        let html = `<div style="margin-bottom:14px; color:var(--text-muted);">${rows[0].Descripcion}</div>
-        <table style="width:100%;"><thead><tr><th>Mes</th><th>Técnico</th><th>Virtual</th><th>Físico</th><th>Diferencia</th></tr></thead><tbody id="modalTableBody">`;
-        html += rows.map(r => `<tr onclick="abrirDetalleTecnico('${r.Tecnico}')">
-            <td><span class="pill-mes">${r.Mes}</span></td><td><strong>${r.Tecnico}</strong></td><td>${formatNumber(r.Virtual)}</td><td>${formatNumber(r.Fisico)}</td><td>${getPill(r.Diferencia)}</td>
-        </tr>`).join('');
-        html += `</tbody></table>`;
-        abrirModal(`📦 Intervenciones: ${codigo}`, html);
-    }
-
-    function filtrarDiferencia() {
-        const rawRows = getActiveData().filter(r => Math.abs(r.Diferencia) > 0.01);
-        const rows = rawRows.sort((a,b) => prioritySortLogic(a.Diferencia, b.Diferencia));
-        
-        let html = `<table style="width:100%;"><thead><tr><th>Técnico</th><th>Código</th><th>Material</th><th>Dif</th></tr></thead><tbody id="modalTableBody">`;
-        html += rows.map(r => `<tr onclick="abrirDetalleTecnico('${r.Tecnico}')">
-            <td><strong>${r.Tecnico}</strong></td><td>${r.Codigo}</td><td>${r.Descripcion}</td><td>${getPill(r.Diferencia)}</td>
-        </tr>`).join('');
-        html += `</tbody></table>`;
-        abrirModal(`⚠️ Todos los Descuadres Priorizados`, html);
-    }
-
-    function filtrarTecnicosConDiff() {
-        abrirModal(`⚠️ Técnicos con Fugas`, 'Mostrando panel principal...');
-        switchTab('tecnicos'); cerrarModal();
-    }
-
-    function filtrarTecnicosSinDiff() {
-        abrirModal(`✅ Técnicos Cuadrados`, 'Mostrando panel principal...');
-        switchTab('tecnicos'); cerrarModal();
-    }
-
-    // Buscador Global y Local
-    function ejecutarBusquedaGlobal(q) {
-        q = q.trim().toLowerCase();
-        const card = document.getElementById('searchResultCard');
-        if(!q) { card.style.display = 'none'; return; } 
-        const matches = getActiveData().filter(r => (r.Tecnico&&r.Tecnico.toLowerCase().includes(q)) || (r.Codigo&&r.Codigo.toLowerCase().includes(q)) || (r.Descripcion&&r.Descripcion.toLowerCase().includes(q))).slice(0,30);
-        
-        matches.sort((a,b) => prioritySortLogic(a.Diferencia, b.Diferencia)); // Aplicar prioridad
-        
-        card.style.display = 'block';
-        document.getElementById('searchResultTitle').innerHTML = `🔍 Resultados para "${q}"`;
-        document.getElementById('searchResultBody').innerHTML = `<table><thead><tr><th>Mes</th><th>Técnico</th><th>Código</th><th>Dif</th></tr></thead>
-            <tbody>${matches.map(r => `<tr onclick="abrirDetalleTecnico('${r.Tecnico}')"><td><span class="pill-mes">${r.Mes}</span></td><td><strong>${r.Tecnico}</strong></td><td>${r.Codigo}</td><td>${getPill(r.Diferencia)}</td></tr>`).join('')}</tbody></table>`;
-    }
-    
-    function limpiarBusqueda() { document.getElementById('globalSearchInput').value = ''; document.getElementById('searchResultCard').style.display = 'none'; }
-
-    function filtrarTablaLocal(tbodyId, query) {
-        query = query.toLowerCase();
-        const rows = document.getElementById(tbodyId).getElementsByTagName('tr');
-        for (let row of rows) {
-            row.style.display = row.innerText.toLowerCase().includes(query) ? '' : 'none';
-        }
-    }
+    loadData();
 </script>
 </body>
 </html>

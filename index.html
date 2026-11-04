@@ -78,29 +78,44 @@
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
         .card-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
         .card-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
-        .grid-2col { display: grid; grid-template-columns: 1.35fr 1fr; gap: 22px; }
-        .grid-equal { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
-        @media (max-width: 960px) { .grid-2col, .grid-equal { grid-template-columns: 1fr; } }
+        
+        /* GRID PARA LA SECCIÓN DE TÉCNICOS EN RESUMEN */
+        .grid-tech-summary { display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 22px; margin-bottom: 22px; align-items: stretch; }
+        @media (max-width: 1100px) { .grid-tech-summary { grid-template-columns: 1fr; } }
 
-        /* ===== CONTROLES DE TABLA (BUSCADOR Y ORDEN POR TABLA) ===== */
+        .grid-equal { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+        @media (max-width: 960px) { .grid-equal { grid-template-columns: 1fr; } }
+
+        /* ===== CONTROLES DE TABLA ===== */
         .table-toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
         .table-filter-input { flex: 1; min-width: 180px; }
         .sort-select { padding: 7px 12px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 12.5px; font-weight: 600; color: var(--text-main); background: #f8fafc; cursor: pointer; }
 
-        /* ===== ESTILOS TÉCNICOS ===== */
+        /* ===== RESUMEN TÉCNICOS ===== */
         .tec-summary-boxes { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
-        .summary-box { padding: 14px 18px; border-radius: 12px; border: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: 0.15s; }
+        .summary-box { padding: 14px 18px; border-radius: 12px; border: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: 0.15s; gap: 12px; }
         .summary-box.diff-box { background: #fff5f5; border-color: #fecaca; }
         .summary-box.diff-box:hover { background: #fee2e2; }
         .summary-box.ok-box { background: #f0fdf4; border-color: #bbf7d0; }
         .summary-box.ok-box:hover { background: #dcfce7; }
         .summary-box .num { font-size: 26px; font-weight: 800; }
-        
-        .tec-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-        .tec-chip { background: white; border: 1px solid var(--border); padding: 6px 14px; border-radius: 30px; font-size: 13px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.15s; }
-        .tec-chip:hover { border-color: var(--primary); background: var(--primary-light); }
 
-        /* ===== SELECTOR MULTI-MES BI ===== */
+        /* Lista vertical de técnicos (AHORA SIN SCROLL INTERNO) */
+        .tec-list { display: flex; flex-direction: column; gap: 8px; padding-right: 4px; }
+        .tec-list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; background: white; border: 1px solid var(--border); border-radius: 12px; cursor: pointer; transition: 0.15s; gap: 12px; }
+        .tec-list-item:hover { border-color: var(--primary); background: var(--primary-light); transform: translateX(4px); }
+        .tec-list-item .tec-info { display: flex; flex-direction: column; gap: 2px; }
+        .tec-list-item .tec-name { font-weight: 700; font-size: 14px; }
+        .tec-list-item .tec-stats { font-size: 12px; color: var(--text-muted); }
+
+        /* Panel Donut y Críticos */
+        .donut-container { position: relative; height: 220px; width: 100%; display: flex; justify-content: center; margin-bottom: 15px; }
+        .crit-list { display: flex; flex-direction: column; gap: 8px; }
+        .crit-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; cursor: pointer; transition: 0.15s; }
+        .crit-item:hover { background: var(--primary-light); border-color: var(--primary); }
+        .crit-title { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+
+        /* ===== SELECTOR MULTI-MES ===== */
         .month-checkboxes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
         .month-check-label { display: inline-flex; align-items: center; gap: 6px; padding: 6px 13px; border-radius: 20px; border: 1px solid var(--border); background: #f8fafc; font-size: 13px; font-weight: 600; cursor: pointer; user-select: none; transition: 0.15s; }
         .month-check-label:hover { border-color: var(--primary); }
@@ -135,6 +150,13 @@
         .btn-close-modal { background: #e2e8f0; border: none; padding: 7px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; color: var(--text-main); }
         .btn-close-modal:hover { background: #cbd5e1; }
         .modal-body { padding: 20px 24px; overflow-y: auto; }
+
+        /* ===== FULLSCREEN PANEL ===== */
+        .fullscreen-panel { position: fixed; inset: 0; background: var(--bg-body); z-index: 998; display: none; flex-direction: column; }
+        .fullscreen-panel.open { display: flex; }
+        .fullscreen-header { background: var(--bg-card); border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .fullscreen-title { font-size: 18px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
+        .fullscreen-body { flex: 1; overflow-y: auto; padding: 20px 24px; max-width: 1500px; margin: 0 auto; width: 100%; }
 
         .tab-content { display: none; }
         .tab-content.active { display: block; }
@@ -182,8 +204,8 @@
         <div class="onboarding-steps">
             <div style="font-weight:700; font-size:15px;">👋 ¿Cómo usar este panel?</div>
             <div class="step-item"><span class="step-num">1</span><span>Elige el <strong>Período</strong> abajo.</span></div>
-            <div class="step-item"><span class="step-num">2</span><span>Haz clic en cualquier <strong>Tarjeta, Fila o Técnico</strong>.</span></div>
-            <div class="step-item"><span class="step-num">3</span><span>Orden por defecto: <strong>Faltantes 🔴 &gt; Sobrantes 🟢 &gt; Cuadrados ✅</strong>.</span></div>
+            <div class="step-item"><span class="step-num">2</span><span>Haz clic en cualquier <strong>Tarjeta, Técnico o Material</strong>.</span></div>
+            <div class="step-item"><span class="step-num">3</span><span>Técnico → abre <strong>pantalla completa</strong> con comparador mensual.</span></div>
         </div>
         <button class="btn-close-banner" onclick="document.getElementById('onboardingBanner').style.display='none'">Entendido ✕</button>
     </div>
@@ -197,7 +219,7 @@
         </div>
         <div class="filter-group">
             <label>👤 Ir a Técnico:</label>
-            <select id="tecnicoSelect" class="filter-select" onchange="if(this.value) { abrirDetalleTecnico(this.value); this.value=''; }">
+            <select id="tecnicoSelect" class="filter-select" onchange="if(this.value) { abrirDetalleTecnicoFullScreen(this.value); this.value=''; }">
                 <option value="">Seleccionar técnico...</option>
             </select>
         </div>
@@ -220,89 +242,94 @@
     <section id="tabAuditoriaContent" class="tab-content active">
         <div class="kpi-grid" id="kpiContainer"></div>
 
-        <div class="card">
-            <div class="card-header">
-                <div>
-                    <div class="card-title">👥 Estado de Técnicos en el Período</div>
-                    <div class="card-subtitle">Ordenados por prioridad: Faltantes arriba, Sobrantes al medio y Cuadrados al final</div>
-                </div>
-            </div>
-            <div class="tec-summary-boxes">
-                <div class="summary-box diff-box" onclick="filtrarTecnicosConDiff()">
-                    <div>
-                        <div style="font-size:13px; font-weight:700; color:var(--danger);">⚠️ TÉCNICOS CON DIFERENCIAS</div>
-                        <div style="font-size:12px; color:var(--text-muted);">Presentan faltantes o sobrantes · <strong>Ver lista →</strong></div>
-                    </div>
-                    <div class="num" style="color:var(--danger);" id="tecConDiff">0</div>
-                </div>
-                <div class="summary-box ok-box" onclick="filtrarTecnicosSinDiff()">
-                    <div>
-                        <div style="font-size:13px; font-weight:700; color:var(--success);">✅ TÉCNICOS CUADRADOS</div>
-                        <div style="font-size:12px; color:var(--text-muted);">Stock físico igual al virtual · <strong>Ver lista →</strong></div>
-                    </div>
-                    <div class="num" style="color:var(--success);" id="tecSinDiff">0</div>
-                </div>
-            </div>
-            <div class="tec-chips" id="tecListContainer"></div>
-        </div>
-
-        <div class="grid-2col">
-            <div class="card">
+        <div class="grid-tech-summary">
+            <!-- Columna Izquierda: Lista de Técnicos (Ocupa toda la altura) -->
+            <div class="card" style="margin-bottom:0; display:flex; flex-direction:column;">
                 <div class="card-header">
                     <div>
-                        <div class="card-title">📌 Materiales por Prioridad de Descuadre</div>
-                        <div class="card-subtitle">Haz clic en cualquier material para ver qué técnicos lo tienen</div>
+                        <div class="card-title">👥 Estado de Técnicos en el Período</div>
+                        <div class="card-subtitle">Lista vertical · Click en cualquier técnico para abrir su comparador mensual</div>
                     </div>
                 </div>
-                <div class="table-toolbar">
-                    <input type="text" id="filterTopMat" class="table-filter-input" placeholder="🔍 Filtrar material o código..." oninput="renderResumenTables()">
-                    <select id="sortTopMat" class="sort-select" onchange="renderResumenTables()">
-                        <option value="PRIORITY">Orden: Prioridad (Déficit &gt; Sobrante &gt; 0)</option>
-                        <option value="DIFF_DESC">Mayor Faltante primero</option>
-                        <option value="DIFF_ASC">Mayor Sobrante primero</option>
-                        <option value="ABS_DESC">Mayor Desviación Absoluta</option>
-                        <option value="NAME_ASC">Alfabético (A - Z)</option>
-                    </select>
+                <div class="tec-summary-boxes">
+                    <div class="summary-box diff-box" onclick="filtrarTecnicosConDiff()">
+                        <div>
+                            <div style="font-size:13px; font-weight:700; color:var(--danger);">⚠️ TÉCNICOS CON DIFERENCIAS</div>
+                            <div style="font-size:12px; color:var(--text-muted);">Presentan faltantes o sobrantes · <strong>Ver lista →</strong></div>
+                        </div>
+                        <div class="num" style="color:var(--danger);" id="tecConDiff">0</div>
+                    </div>
+                    <div class="summary-box ok-box" onclick="filtrarTecnicosSinDiff()">
+                        <div>
+                            <div style="font-size:13px; font-weight:700; color:var(--success);">✅ TÉCNICOS CUADRADOS</div>
+                            <div style="font-size:12px; color:var(--text-muted);">Stock físico igual al virtual · <strong>Ver lista →</strong></div>
+                        </div>
+                        <div class="num" style="color:var(--success);" id="tecSinDiff">0</div>
+                    </div>
                 </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead><tr><th>Código</th><th>Material</th><th>Diferencia Neta</th></tr></thead>
-                        <tbody id="topItemsBody"></tbody>
-                    </table>
-                </div>
+                <div class="tec-list" id="tecListContainer" style="flex:1;"></div>
             </div>
 
-            <div class="card">
-                <div class="card-header">
-                    <div>
-                        <div class="card-title">🧑‍🔧 Ranking de Técnicos por Desviación</div>
-                        <div class="card-subtitle">Haz clic en un técnico para abrir su hoja completa</div>
+            <!-- Columna Derecha: Ranking y Materiales apilados -->
+            <div style="display:flex; flex-direction:column; gap:22px;">
+                <!-- Ranking de Técnicos -->
+                <div class="card" style="margin-bottom:0;">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">🧑‍🔧 Ranking de Técnicos por Desviación</div>
+                            <div class="card-subtitle">Haz clic en un técnico para abrir su comparador mensual</div>
+                        </div>
+                    </div>
+                    <div class="table-toolbar">
+                        <input type="text" id="filterTopTec" class="table-filter-input" placeholder="🔍 Filtrar técnico..." oninput="renderResumenTables()">
+                        <select id="sortTopTec" class="sort-select" onchange="renderResumenTables()">
+                            <option value="PRIORITY">Orden: Prioridad (Déficit &gt; Sobrante &gt; 0)</option>
+                            <option value="DIFF_DESC">Mayor Faltante primero</option>
+                            <option value="DIFF_ASC">Mayor Sobrante primero</option>
+                            <option value="ABS_DESC">Mayor Desviación Absoluta</option>
+                            <option value="NAME_ASC">Alfabético (A - Z)</option>
+                        </select>
+                    </div>
+                    <div class="table-wrapper" style="max-height: 260px;">
+                        <table>
+                            <thead><tr><th>#</th><th>Técnico</th><th>Ítems Desc.</th><th>Balance</th></tr></thead>
+                            <tbody id="topTecnicosBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="chart-box"><canvas id="tecnicosChart"></canvas></div>
+                </div>
+
+                <!-- Materiales por Prioridad -->
+                <div class="card" style="margin-bottom:0; flex:1;">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">📌 Materiales por Prioridad de Descuadre</div>
+                            <div class="card-subtitle">Haz clic en cualquier material para ver qué técnicos lo tienen</div>
+                        </div>
+                    </div>
+                    <div class="table-toolbar">
+                        <input type="text" id="filterTopMat" class="table-filter-input" placeholder="🔍 Filtrar material o código..." oninput="renderResumenTables()">
+                        <select id="sortTopMat" class="sort-select" onchange="renderResumenTables()">
+                            <option value="PRIORITY">Orden: Prioridad (Déficit &gt; Sobrante &gt; 0)</option>
+                            <option value="DIFF_DESC">Mayor Faltante primero</option>
+                            <option value="DIFF_ASC">Mayor Sobrante primero</option>
+                            <option value="ABS_DESC">Mayor Desviación Absoluta</option>
+                            <option value="NAME_ASC">Alfabético (A - Z)</option>
+                        </select>
+                    </div>
+                    <div class="table-wrapper" style="max-height: 260px;">
+                        <table>
+                            <thead><tr><th>Código</th><th>Material</th><th>Diferencia Neta</th></tr></thead>
+                            <tbody id="topItemsBody"></tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="table-toolbar">
-                    <input type="text" id="filterTopTec" class="table-filter-input" placeholder="🔍 Filtrar técnico..." oninput="renderResumenTables()">
-                    <select id="sortTopTec" class="sort-select" onchange="renderResumenTables()">
-                        <option value="PRIORITY">Orden: Prioridad (Déficit &gt; Sobrante &gt; 0)</option>
-                        <option value="DIFF_DESC">Mayor Faltante primero</option>
-                        <option value="DIFF_ASC">Mayor Sobrante primero</option>
-                        <option value="ABS_DESC">Mayor Desviación Absoluta</option>
-                        <option value="NAME_ASC">Alfabético (A - Z)</option>
-                    </select>
-                </div>
-                <div class="table-wrapper" style="max-height:260px;">
-                    <table>
-                        <thead><tr><th>#</th><th>Técnico</th><th>Ítems Desc.</th><th>Balance</th></tr></thead>
-                        <tbody id="topTecnicosBody"></tbody>
-                    </table>
-                </div>
-                <div class="chart-box"><canvas id="tecnicosChart"></canvas></div>
             </div>
         </div>
     </section>
 
     <!-- 2. ANÁLISIS AVANZADO (BI) -->
     <section id="tabAnalisisContent" class="tab-content">
-        <!-- Selector Multi-Mes para Cruce -->
         <div class="card">
             <div class="card-header" style="margin-bottom:6px;">
                 <div>
@@ -318,66 +345,57 @@
         </div>
 
         <div class="grid-equal">
-            <div class="card">
+            <!-- Balance del Período (Movido desde Resumen) -->
+            <div class="card" style="margin-bottom:0; display:flex; flex-direction:column;">
                 <div class="card-header">
                     <div>
-                        <div class="card-title">⚖️ Faltantes vs. Sobrantes por Período</div>
-                        <div class="card-subtitle">Volumen total de unidades faltantes (rojo) frente a sobrantes (verde) en cada mes</div>
+                        <div class="card-title">📊 Balance del Período</div>
+                        <div class="card-subtitle">Distribución de ítems y Top 3 materiales en riesgo</div>
                     </div>
                 </div>
-                <div class="chart-box-large"><canvas id="fugasSobrasChart"></canvas></div>
+                <div class="donut-container">
+                    <canvas id="donutEstadoChart"></canvas>
+                </div>
+                <div class="crit-list" id="top3CriticosContainer" style="flex:1;"></div>
             </div>
-            <div class="card">
+
+            <!-- Top 7 Materiales con Mayor Déficit -->
+            <div class="card" style="margin-bottom:0; display:flex; flex-direction:column;">
                 <div class="card-header">
                     <div>
-                        <div class="card-title">🚨 Top 7 Materiales con Mayor Fuga (Déficit)</div>
-                        <div class="card-subtitle">Ítems que acumulan la mayor pérdida neta en los meses marcados</div>
+                        <div class="card-title">🚨 Top 7 Materiales con Mayor Déficit Acumulado</div>
+                        <div class="card-subtitle">Materiales que acumulan la mayor pérdida neta en los meses marcados (misma unidad por material)</div>
                     </div>
                 </div>
-                <div class="chart-box-large"><canvas id="topFugasChart"></canvas></div>
+                <div class="chart-box-large" style="flex:1; min-height:290px;"><canvas id="topFugasChart"></canvas></div>
             </div>
         </div>
 
-        <!-- Gráfica Tipo Bitcoin / Bolsa por Material -->
         <div class="card">
             <div class="card-header">
                 <div>
-                    <div class="card-title">📈 Evolución Histórica por Material (Gráfica Tipo Trading / Cruce de Ítems)</div>
-                    <div class="card-subtitle">Analiza qué tendencia sigue un material mes a mes o compáralo contra un segundo material</div>
+                    <div class="card-title">📈 Evolución de un Material por Técnico Responsable</div>
+                    <div class="card-subtitle">Selecciona un material y verás una línea por cada técnico que lo tiene a cargo. Comparas siempre la misma unidad (metros con metros, equipos con equipos)</div>
                 </div>
             </div>
             <div class="table-toolbar" style="margin-bottom:16px;">
                 <div class="filter-group" style="flex:1; min-width:250px;">
-                    <label>🔴 Material Principal:</label>
+                    <label>📦 Material a Analizar:</label>
                     <select id="matEvolSelect1" class="filter-select" style="width:100%;" onchange="renderMaterialEvolucion()"></select>
                 </div>
-                <div class="filter-group" style="flex:1; min-width:250px;">
-                    <label>🔵 Comparar con (Opcional):</label>
-                    <select id="matEvolSelect2" class="filter-select" style="width:100%;" onchange="renderMaterialEvolucion()">
-                        <option value="">-- Sin segundo material --</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Métrica:</label>
-                    <select id="matEvolMetric" class="sort-select" onchange="renderMaterialEvolucion()">
-                        <option value="DIFF">Descuadre Neto (Faltante / Sobrante)</option>
-                        <option value="VIRT_FIS">Stock Virtual vs. Stock Físico</option>
-                    </select>
-                </div>
             </div>
-            <div class="chart-box-large" style="height:310px;"><canvas id="matEvolucionChart"></canvas></div>
+            <div class="chart-box-large" style="height:340px;"><canvas id="matEvolucionChart"></canvas></div>
         </div>
 
-        <!-- Matriz Comparativa Mes a Mes por Material -->
         <div class="card">
             <div class="card-header">
                 <div>
-                    <div class="card-title">📦 Catálogo y Cruce Histórico de Materiales Auditados</div>
-                    <div class="card-subtitle">Todos los materiales ordenados por prioridad operativa (Déficit arriba &gt; Sobrante al medio &gt; Cuadrado abajo)</div>
+                    <div class="card-title">📦 Cruce Histórico · Material + Técnico Responsable</div>
+                    <div class="card-subtitle">Cada fila es un par Material/Técnico. Permite ver quién arrastra el descuadre mes a mes (orden por prioridad: Déficit arriba)</div>
                 </div>
             </div>
             <div class="table-toolbar">
-                <input type="text" id="filterCatMat" class="table-filter-input" placeholder="🔍 Buscar por código o nombre de material..." oninput="renderCatalogoBI()">
+                <input type="text" id="filterCatMat" class="table-filter-input" placeholder="🔍 Buscar por código, material o técnico..." oninput="renderCatalogoBI()">
                 <select id="filterStateCatMat" class="sort-select" onchange="renderCatalogoBI()">
                     <option value="ALL">Estado: Todos</option>
                     <option value="FALTANTE">🔴 Solo con Faltantes</option>
@@ -407,7 +425,7 @@
             <div class="card-header">
                 <div>
                     <div class="card-title">👥 Desempeño Completo de la Nómina</div>
-                    <div class="card-subtitle">Ordenado por defecto según regla de prioridad: Faltantes arriba, Sobrantes al medio y Cuadrados abajo</div>
+                    <div class="card-subtitle">Click en cualquier técnico → abre el comparador mensual en pantalla completa</div>
                 </div>
             </div>
             <div class="table-toolbar">
@@ -472,6 +490,14 @@
     </div>
 </div>
 
+<div class="fullscreen-panel" id="fullscreenPanel">
+    <div class="fullscreen-header">
+        <div class="fullscreen-title" id="fsTitle">👤 Técnico</div>
+        <button class="btn-close-modal" onclick="cerrarFullScreen()">✖ Cerrar</button>
+    </div>
+    <div class="fullscreen-body" id="fsBody"></div>
+</div>
+
 <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxGYttBc8Aq1HhkZxhIYazlC_k4tP7GKJBtOb34foIXtyrmfvUctiN0o7szYfpoHXAS/exec';
     
@@ -482,6 +508,9 @@
     let charts = {};
     let modalCurrentRows = [];
     let modalCurrentType = '';
+
+    let fsCurrentTecnico = null;
+    let fsSelectedMonths = new Set();
 
     function formatNumber(num) {
         const n = parseFloat(num) || 0;
@@ -496,10 +525,6 @@
         return `<span class="pill pill-sobrante">🟢 Sobran ${formatNumber(Math.abs(num))}</span>`;
     }
 
-    // REGLA DE ORO ESTRICTA:
-    // 1° Faltantes (val > 0), ordenados del mayor faltante al menor
-    // 2° Sobrantes (val < 0), ordenados del mayor sobrante al menor
-    // 3° Cuadrados (val == 0) al final
     function getVal(item) {
         if (item.b !== undefined) return parseFloat(item.b) || 0;
         if (item.Diferencia !== undefined) return parseFloat(item.Diferencia) || 0;
@@ -507,7 +532,7 @@
     }
 
     function getName(item) {
-        return String(item.nombre || item.n || item.Tecnico || item.c || item.Codigo || item.m || '').toLowerCase();
+        return String(item.nombre || item.n || item.Tecnico || item.t || item.c || item.Codigo || item.m || '').toLowerCase();
     }
 
     function sortByRule(list, mode = 'PRIORITY') {
@@ -517,29 +542,17 @@
             const isZeroA = Math.abs(vA) < 0.01;
             const isZeroB = Math.abs(vB) < 0.01;
 
-            if (mode === 'NAME_ASC' || mode === 'MES_ASC') {
-                return getName(a).localeCompare(getName(b));
-            }
-            if (mode === 'DIFF_DESC') {
-                return vB - vA;
-            }
-            if (mode === 'DIFF_ASC') {
-                return vA - vB;
-            }
-            if (mode === 'ABS_DESC') {
-                return Math.abs(vB) - Math.abs(vA);
-            }
-            if (mode === 'ITEMS_DESC') {
-                return (b.cD || 0) - (a.cD || 0) || (Math.abs(vB) - Math.abs(vA));
-            }
+            if (mode === 'NAME_ASC' || mode === 'MES_ASC') return getName(a).localeCompare(getName(b));
+            if (mode === 'DIFF_DESC') return vB - vA;
+            if (mode === 'DIFF_ASC') return vA - vB;
+            if (mode === 'ABS_DESC') return Math.abs(vB) - Math.abs(vA);
+            if (mode === 'ITEMS_DESC') return (b.cD || 0) - (a.cD || 0) || (Math.abs(vB) - Math.abs(vA));
 
-            // MODO POR DEFECTO: PRIORITY (Faltantes arriba > Sobrantes al medio > Cuadrados abajo)
             const catA = isZeroA ? 3 : (vA > 0 ? 1 : 2);
             const catB = isZeroB ? 3 : (vB > 0 ? 1 : 2);
-
             if (catA !== catB) return catA - catB;
-            if (catA === 1) return vB - vA; // Mayor déficit primero
-            if (catA === 2) return Math.abs(vB) - Math.abs(vA); // Mayor sobrante primero
+            if (catA === 1) return vB - vA;
+            if (catA === 2) return Math.abs(vB) - Math.abs(vA);
             return getName(a).localeCompare(getName(b));
         });
     }
@@ -554,11 +567,8 @@
         if (tab === 'historico') renderHistorico();
     }
 
-    function cerrarModal() {
-        document.getElementById('detailModal').classList.remove('open');
-    }
+    function cerrarModal() { document.getElementById('detailModal').classList.remove('open'); }
 
-    // CARGA DE DATOS REAL (Fetch + Respaldo JSONP, Cero datos ficticios)
     async function loadData() {
         try {
             const response = await fetch(`${SCRIPT_URL}?action=getData`, { method: 'GET', redirect: 'follow' });
@@ -571,15 +581,12 @@
                 }
             }
             throw new Error('Fallback a JSONP');
-        } catch (err) {
-            loadDataJSONP();
-        }
+        } catch (err) { loadDataJSONP(); }
     }
 
     function loadDataJSONP() {
         const script = document.createElement('script');
         const cb = 'jsonpCallback_' + Math.round(1000000 * Math.random());
-        
         const timeout = setTimeout(() => {
             mostrarErrorConexion('El servidor de Google Sheets tardó demasiado en responder. Verifica que la implementación de Apps Script tenga acceso para "Cualquier usuario".');
         }, 12000);
@@ -588,12 +595,8 @@
             clearTimeout(timeout);
             delete window[cb];
             if (script.parentNode) script.parentNode.removeChild(script);
-            if (data && Array.isArray(data.rows)) {
-                db = data.rows;
-                initApp();
-            } else {
-                mostrarErrorConexion('La hoja consolidada no devolvió registros válidos.');
-            }
+            if (data && Array.isArray(data.rows)) { db = data.rows; initApp(); }
+            else { mostrarErrorConexion('La hoja consolidada no devolvió registros válidos.'); }
         };
 
         script.src = `${SCRIPT_URL}?action=getData&callback=${cb}`;
@@ -620,11 +623,8 @@
 
         const sel = document.getElementById('mesGlobalSelect');
         sel.innerHTML = '<option value="ALL">Todos los períodos acumulados (' + allMonths.length + ')</option>';
-        allMonths.forEach(m => {
-            sel.innerHTML += `<option value="${m}">${m}</option>`;
-        });
+        allMonths.forEach(m => { sel.innerHTML += `<option value="${m}">${m}</option>`; });
 
-        // Inicializar selectores de materiales para gráfica tipo Bitcoin
         const matMap = new Map();
         db.forEach(r => {
             if (!matMap.has(r.Codigo)) matMap.set(r.Codigo, { c: r.Codigo, d: r.Descripcion, b: 0 });
@@ -633,14 +633,10 @@
         const sortedMats = sortByRule(Array.from(matMap.values()), 'PRIORITY');
 
         const selMat1 = document.getElementById('matEvolSelect1');
-        const selMat2 = document.getElementById('matEvolSelect2');
         selMat1.innerHTML = '';
-        selMat2.innerHTML = '<option value="">-- Sin segundo material --</option>';
-
         sortedMats.forEach(m => {
             const label = `${m.c} · ${m.d.substring(0, 42)} (${m.b > 0 ? 'Faltan ' + formatNumber(m.b) : m.b < 0 ? 'Sobran ' + formatNumber(Math.abs(m.b)) : '0'})`;
             selMat1.innerHTML += `<option value="${m.c}">${label}</option>`;
-            selMat2.innerHTML += `<option value="${m.c}">${label}</option>`;
         });
 
         renderBIMonthCheckboxes();
@@ -660,8 +656,7 @@
     }
 
     function toggleBIMonth(mes, isChecked) {
-        if (isChecked) biSelectedMonths.add(mes);
-        else biSelectedMonths.delete(mes);
+        if (isChecked) biSelectedMonths.add(mes); else biSelectedMonths.delete(mes);
         renderBIMonthCheckboxes();
         renderBIModule();
     }
@@ -672,10 +667,7 @@
         renderBIModule();
     }
 
-    function cambiarMesGlobal(mes) {
-        selectedMonth = mes;
-        renderGlobal();
-    }
+    function cambiarMesGlobal(mes) { selectedMonth = mes; renderGlobal(); }
     
     function resetView() { 
         selectedMonth = 'ALL'; 
@@ -689,43 +681,40 @@
         renderGlobal(); 
     }
 
-    function getActiveData() {
-        return selectedMonth === 'ALL' ? db : db.filter(r => r.Mes === selectedMonth);
-    }
+    function getActiveData() { return selectedMonth === 'ALL' ? db : db.filter(r => r.Mes === selectedMonth); }
 
     function renderGlobal() {
         const data = getActiveData();
         
-        // 1. KPIs interactivos
-        const v = data.reduce((s, r) => s + (parseFloat(r.Virtual) || 0), 0);
-        const f = data.reduce((s, r) => s + (parseFloat(r.Fisico) || 0), 0);
         const uniqueItems = new Set(data.map(r => r.Codigo)).size;
-        const diffs = data.filter(r => Math.abs(r.Diferencia) > 0.01).length;
+        const countFaltantes = data.filter(r => (parseFloat(r.Diferencia) || 0) > 0.01).length;
+        const countSobrantes = data.filter(r => (parseFloat(r.Diferencia) || 0) < -0.01).length;
+        const countCuadrados = data.filter(r => Math.abs(parseFloat(r.Diferencia) || 0) <= 0.01).length;
+        const pctCuadrado = data.length > 0 ? Math.round((countCuadrados / data.length) * 100) : 0;
 
         document.getElementById('kpiContainer').innerHTML = `
-            <div class="kpi-card" onclick="switchTab('analisis')">
+            <div class="kpi-card" onclick="abrirCatalogoMateriales()">
                 <div class="kpi-top"><span class="kpi-label">Materiales Auditados</span></div>
                 <div class="kpi-value">${uniqueItems}</div>
-                <div class="kpi-footer"><span>${data.length} registros</span><span class="kpi-action">Ir a Análisis BI →</span></div>
+                <div class="kpi-footer"><span>${data.length} registros</span><span class="kpi-action">Ver catálogo →</span></div>
             </div>
-            <div class="kpi-card">
-                <div class="kpi-top"><span class="kpi-label">Stock (Virtual / Físico)</span></div>
-                <div class="kpi-value">${formatNumber(v)} <span style="font-size:16px;color:#94a3b8;">/ ${formatNumber(f)}</span></div>
-                <div class="kpi-footer"><span>Unidades totales</span><span>Período activo</span></div>
+            <div class="kpi-card" onclick="filtrarFaltantes()">
+                <div class="kpi-top"><span class="kpi-label" style="color:var(--danger);">Con Faltante 🔴</span></div>
+                <div class="kpi-value" style="color:var(--danger);">${countFaltantes}</div>
+                <div class="kpi-footer"><span>Registros con déficit</span><span class="kpi-action">Ver lista →</span></div>
             </div>
-            <div class="kpi-card" onclick="filtrarDiferencia()">
-                <div class="kpi-top"><span class="kpi-label">Balance Neto</span></div>
-                <div class="kpi-value">${getPill(v - f)}</div>
-                <div class="kpi-footer"><span>Desviación acumulada</span><span class="kpi-action">Ver desglose →</span></div>
+            <div class="kpi-card" onclick="filtrarSobrantes()">
+                <div class="kpi-top"><span class="kpi-label" style="color:var(--success);">Con Sobrante 🟢</span></div>
+                <div class="kpi-value" style="color:var(--success);">${countSobrantes}</div>
+                <div class="kpi-footer"><span>Registros con exceso</span><span class="kpi-action">Ver lista →</span></div>
             </div>
-            <div class="kpi-card" onclick="filtrarDiferencia()" style="background:var(--primary-light); border-color:var(--primary);">
-                <div class="kpi-top"><span class="kpi-label" style="color:var(--primary-dark);">Registros con Descuadre</span></div>
-                <div class="kpi-value" style="color:var(--primary-dark);">${diffs}</div>
-                <div class="kpi-footer"><span style="color:var(--primary-dark);">Faltantes o sobrantes</span><span class="kpi-action">Auditar →</span></div>
+            <div class="kpi-card" onclick="filtrarCuadrados()" style="background:var(--primary-light); border-color:var(--primary);">
+                <div class="kpi-top"><span class="kpi-label" style="color:var(--primary-dark);">Cuadratura ✅</span></div>
+                <div class="kpi-value" style="color:var(--primary-dark);">${pctCuadrado}%</div>
+                <div class="kpi-footer"><span style="color:var(--primary-dark);">${countCuadrados} de ${data.length} ítems</span><span class="kpi-action">Ver lista →</span></div>
             </div>
         `;
 
-        // 2. Agrupación Técnicos con orden estricto de prioridad
         const tecMap = new Map();
         data.forEach(r => {
             if (!tecMap.has(r.Tecnico)) tecMap.set(r.Tecnico, { nombre: r.Tecnico, b: 0, c: 0, cD: 0 });
@@ -741,8 +730,67 @@
         document.getElementById('tecSinDiff').textContent = tecArr.length - conDiff.length;
         
         document.getElementById('tecListContainer').innerHTML = tecArr.map(t => `
-            <div class="tec-chip" onclick="abrirDetalleTecnico('${t.nombre}')">👤 ${t.nombre} ${getPill(t.b)}</div>
+            <div class="tec-list-item" onclick="abrirDetalleTecnicoFullScreen('${t.nombre.replace(/'/g, "\\'")}')">
+                <div class="tec-info">
+                    <span class="tec-name">👤 ${t.nombre}</span>
+                    <span class="tec-stats">${t.cD} ítem${t.cD === 1 ? '' : 's'} con descuadre · ${t.c} registro${t.c === 1 ? '' : 's'} totales</span>
+                </div>
+                <div>${getPill(t.b)}</div>
+            </div>
         `).join('');
+
+        // --- GRÁFICO DONUT Y TOP 3 CRÍTICOS (Ahora renderizados en la pestaña BI, pero generados aquí) ---
+        if (charts.donutEstado) charts.donutEstado.destroy();
+        charts.donutEstado = new Chart(document.getElementById('donutEstadoChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Faltantes 🔴', 'Sobrantes 🟢', 'Cuadrados ✅'],
+                datasets: [{
+                    data: [countFaltantes, countSobrantes, countCuadrados],
+                    backgroundColor: ['#dc2626', '#16a34a', '#94a3b8'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '68%',
+                onClick: (evt, elements) => {
+                    if (!elements.length) return;
+                    const idx = elements[0].index;
+                    if (idx === 0) filtrarFaltantes();
+                    else if (idx === 1) filtrarSobrantes();
+                    else filtrarCuadrados();
+                },
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 }, padding: 15 } }
+                }
+            }
+        });
+
+        const matCritMap = new Map();
+        data.forEach(r => {
+            if (!matCritMap.has(r.Codigo)) matCritMap.set(r.Codigo, { c: r.Codigo, d: r.Descripcion, b: 0 });
+            matCritMap.get(r.Codigo).b += (parseFloat(r.Diferencia) || 0);
+        });
+        const top3Crit = Array.from(matCritMap.values()).filter(m => m.b > 0.01).sort((a, b) => b.b - a.b).slice(0, 3);
+        
+        let htmlTop3 = `<div class="crit-title">🚨 Top 3 Materiales con Déficit</div>`;
+        if (top3Crit.length === 0) {
+            htmlTop3 += `<div style="font-size:13px; color:var(--text-muted); text-align:center; padding:15px; background:#f8fafc; border-radius:10px; border:1px dashed var(--border);">No hay faltantes en este período ✅</div>`;
+        } else {
+            htmlTop3 += top3Crit.map(m => `
+                <div class="crit-item" onclick="abrirDetalleCodigo('${m.c}')">
+                    <div style="display:flex; flex-direction:column; gap:2px; overflow:hidden; padding-right:10px;">
+                        <span style="font-weight:700; font-size:13px;">${m.c}</span>
+                        <span style="font-size:11px; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${m.d}</span>
+                    </div>
+                    ${getPill(m.b)}
+                </div>
+            `).join('');
+        }
+        document.getElementById('top3CriticosContainer').innerHTML = htmlTop3;
 
         const selTec = document.getElementById('tecnicoSelect');
         selTec.innerHTML = '<option value="">Seleccionar técnico...</option>' + tecArr.map(t => `<option value="${t.nombre}">${t.nombre}</option>`).join('');
@@ -756,7 +804,7 @@
     function renderResumenTables() {
         const data = getActiveData();
 
-        // Tabla Materiales (Resumen)
+        // Tabla Materiales (ahora a la derecha)
         const matMap = new Map();
         data.forEach(r => {
             if (!matMap.has(r.Codigo)) matMap.set(r.Codigo, { c: r.Codigo, d: r.Descripcion, b: 0 });
@@ -773,7 +821,7 @@
                 <td><strong>${m.c}</strong></td><td>${m.d}</td><td>${getPill(m.b)}</td>
             </tr>`).join('');
 
-        // Tabla Técnicos (Resumen)
+        // Tabla Técnicos (ahora arriba a la derecha)
         const tecMap = new Map();
         data.forEach(r => {
             if (!tecMap.has(r.Tecnico)) tecMap.set(r.Tecnico, { nombre: r.Tecnico, b: 0, cD: 0 });
@@ -788,11 +836,10 @@
         tecArr = sortByRule(tecArr, sortTecMode);
 
         document.getElementById('topTecnicosBody').innerHTML = tecArr.map((t, i) => `
-            <tr onclick="abrirDetalleTecnico('${t.nombre}')">
+            <tr onclick="abrirDetalleTecnicoFullScreen('${t.nombre.replace(/'/g, "\\'")}')">
                 <td><strong>#${i + 1}</strong></td><td>${t.nombre}</td><td>${t.cD}</td><td>${getPill(t.b)}</td>
             </tr>`).join('');
 
-        // Gráfico de técnicos en Resumen
         const chartTec = tecArr.slice(0, 10);
         if (charts.tec) charts.tec.destroy();
         charts.tec = new Chart(document.getElementById('tecnicosChart'), {
@@ -809,38 +856,12 @@
         });
     }
 
-    /* ===== MÓDULO BI & ANÁLISIS AVANZADO ===== */
     function renderBIModule() {
         const activeMonths = allMonths.filter(m => biSelectedMonths.has(m));
         const biData = db.filter(r => biSelectedMonths.has(r.Mes));
 
-        // 1. Gráfico Faltantes vs Sobrantes por Mes
-        const faltantesPorMes = activeMonths.map(m => {
-            return db.filter(r => r.Mes === m && r.Diferencia > 0).reduce((s, r) => s + r.Diferencia, 0);
-        });
-        const sobrantesPorMes = activeMonths.map(m => {
-            return db.filter(r => r.Mes === m && r.Diferencia < 0).reduce((s, r) => s + Math.abs(r.Diferencia), 0);
-        });
+        // NOTA: Se eliminó el gráfico "fugasSobrasChart" porque fue reemplazado por "Balance del Período".
 
-        if (charts.fugasSobras) charts.fugasSobras.destroy();
-        charts.fugasSobras = new Chart(document.getElementById('fugasSobrasChart'), {
-            type: 'bar',
-            data: {
-                labels: activeMonths,
-                datasets: [
-                    { label: '🔴 Unidades Faltantes (Déficit)', data: faltantesPorMes, backgroundColor: '#ef4444', borderRadius: 6 },
-                    { label: '🟢 Unidades Sobrantes (Exceso)', data: sobrantesPorMes, backgroundColor: '#22c55e', borderRadius: 6 }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { position: 'bottom' } },
-                scales: { y: { beginAtZero: true } }
-            }
-        });
-
-        // 2. Top 7 Materiales con Mayor Fuga (Solo Faltantes Netos > 0)
         const matMap = new Map();
         biData.forEach(r => {
             if (!matMap.has(r.Codigo)) matMap.set(r.Codigo, { c: r.Codigo, d: r.Descripcion, b: 0 });
@@ -872,67 +893,44 @@
         renderCatalogoBI();
     }
 
-    // Gráfica Tipo Bitcoin / Bolsa para 1 o 2 Materiales
     function renderMaterialEvolucion() {
-        const cod1 = document.getElementById('matEvolSelect1').value;
-        const cod2 = document.getElementById('matEvolSelect2').value;
-        const metric = document.getElementById('matEvolMetric').value;
+        const cod = document.getElementById('matEvolSelect1').value;
         const activeMonths = allMonths.filter(m => biSelectedMonths.has(m));
+        if (!cod || activeMonths.length === 0) return;
 
-        if (!cod1 || activeMonths.length === 0) return;
+        const techsForMat = [...new Set(db.filter(r => r.Codigo === cod).map(r => r.Tecnico))].sort();
+        const colors = ['#dc2626', '#1d6f9c', '#16a34a', '#d97706', '#7c3aed', '#0891b2', '#be185d', '#65a30d', '#a16207', '#0d9488', '#9333ea', '#db2777'];
 
-        const datasets = [];
-
-        if (metric === 'DIFF') {
-            const serie1 = activeMonths.map(m => db.filter(r => r.Mes === m && r.Codigo === cod1).reduce((s, r) => s + r.Diferencia, 0));
-            datasets.push({
-                label: `${cod1} (Descuadre: + Faltan / - Sobran)`,
-                data: serie1,
-                borderColor: '#dc2626',
-                backgroundColor: 'rgba(220, 38, 38, 0.12)',
-                pointBackgroundColor: '#dc2626',
-                pointRadius: 6,
-                borderWidth: 3,
-                tension: 0.25,
-                fill: true
+        const datasets = techsForMat.map((tec, i) => {
+            const serie = activeMonths.map(m => {
+                return db.filter(r => r.Mes === m && r.Codigo === cod && r.Tecnico === tec)
+                    .reduce((s, r) => s + (parseFloat(r.Diferencia) || 0), 0);
             });
-
-            if (cod2) {
-                const serie2 = activeMonths.map(m => db.filter(r => r.Mes === m && r.Codigo === cod2).reduce((s, r) => s + r.Diferencia, 0));
-                datasets.push({
-                    label: `${cod2} (Descuadre: + Faltan / - Sobran)`,
-                    data: serie2,
-                    borderColor: '#1d6f9c',
-                    backgroundColor: 'rgba(29, 111, 156, 0.08)',
-                    pointBackgroundColor: '#1d6f9c',
-                    pointRadius: 6,
-                    borderWidth: 3,
-                    tension: 0.25,
-                    fill: true
-                });
-            }
-        } else {
-            const virt1 = activeMonths.map(m => db.filter(r => r.Mes === m && r.Codigo === cod1).reduce((s, r) => s + r.Virtual, 0));
-            const fis1 = activeMonths.map(m => db.filter(r => r.Mes === m && r.Codigo === cod1).reduce((s, r) => s + r.Fisico, 0));
-            datasets.push(
-                { label: `${cod1} · Stock Virtual`, data: virt1, borderColor: '#1d6f9c', backgroundColor: 'transparent', pointRadius: 5, borderWidth: 3, tension: 0.2 },
-                { label: `${cod1} · Stock Físico`, data: fis1, borderColor: '#16a34a', backgroundColor: 'transparent', borderDash: [6, 4], pointRadius: 5, borderWidth: 3, tension: 0.2 }
-            );
-        }
+            return {
+                label: tec,
+                data: serie,
+                borderColor: colors[i % colors.length],
+                backgroundColor: 'transparent',
+                borderWidth: 2.5,
+                tension: 0.25,
+                pointRadius: 4,
+                spanGaps: true
+            };
+        });
 
         if (charts.matEvol) charts.matEvol.destroy();
         charts.matEvol = new Chart(document.getElementById('matEvolucionChart'), {
             type: 'line',
-            data: { labels: activeMonths, datasets: datasets },
+            data: { labels: activeMonths, datasets },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { position: 'bottom' } }
+                plugins: { legend: { position: 'bottom' } },
+                scales: { y: { title: { display: true, text: 'Diferencia (positivo = falta, negativo = sobra)' } } }
             }
         });
     }
 
-    // Tabla Matriz de Materiales con cruce mes a mes
     function renderCatalogoBI() {
         const activeMonths = allMonths.filter(m => biSelectedMonths.has(m));
         const biData = db.filter(r => biSelectedMonths.has(r.Mes));
@@ -941,19 +939,18 @@
         const stateFilter = document.getElementById('filterStateCatMat').value;
         const sortMode = document.getElementById('sortCatMat').value;
 
-        const matMap = new Map();
+        const itemMap = new Map();
         biData.forEach(r => {
-            if (!matMap.has(r.Codigo)) {
-                matMap.set(r.Codigo, { c: r.Codigo, d: r.Descripcion, n: 0, b: 0, byMonth: {} });
-            }
-            let m = matMap.get(r.Codigo);
+            const key = r.Codigo + '||' + r.Tecnico;
+            if (!itemMap.has(key)) itemMap.set(key, { c: r.Codigo, d: r.Descripcion, t: r.Tecnico, n: 0, b: 0, byMonth: {} });
+            let m = itemMap.get(key);
             m.n++;
             m.b += (parseFloat(r.Diferencia) || 0);
             m.byMonth[r.Mes] = (m.byMonth[r.Mes] || 0) + (parseFloat(r.Diferencia) || 0);
         });
 
-        let list = Array.from(matMap.values()).filter(m => {
-            if (q && !m.c.toLowerCase().includes(q) && !m.d.toLowerCase().includes(q)) return false;
+        let list = Array.from(itemMap.values()).filter(m => {
+            if (q && !m.c.toLowerCase().includes(q) && !m.d.toLowerCase().includes(q) && !m.t.toLowerCase().includes(q)) return false;
             if (stateFilter === 'FALTANTE' && m.b <= 0.01) return false;
             if (stateFilter === 'SOBRANTE' && m.b >= -0.01) return false;
             if (stateFilter === 'CUADRADO' && Math.abs(m.b) > 0.01) return false;
@@ -962,18 +959,18 @@
 
         list = sortByRule(list, sortMode);
 
-        // Cabecera dinámica con columna por cada mes seleccionado
         const monthCols = activeMonths.map(m => `<th>${m}</th>`).join('');
-        document.getElementById('catMatHead').innerHTML = `<tr><th>Código</th><th>Descripción</th><th>Auditorías</th>${monthCols}<th>Balance Acumulado</th></tr>`;
+        document.getElementById('catMatHead').innerHTML = `<tr><th>Código</th><th>Material</th><th>Técnico Responsable</th><th>Auditorías</th>${monthCols}<th>Balance Acumulado</th></tr>`;
 
         document.getElementById('listaMaterialesFullBody').innerHTML = list.map(m => {
             const monthCells = activeMonths.map(mes => {
                 const val = m.byMonth[mes];
                 return `<td>${val === undefined ? '<span style="color:#cbd5e1;">—</span>' : getPill(val)}</td>`;
             }).join('');
-            return `<tr onclick="abrirDetalleCodigo('${m.c}')">
+            return `<tr onclick="abrirDetalleTecnicoFullScreen('${m.t.replace(/'/g, "\\'")}')">
                 <td><strong>${m.c}</strong></td>
                 <td>${m.d}</td>
+                <td>${m.t}</td>
                 <td>${m.n}</td>
                 ${monthCells}
                 <td>${getPill(m.b)}</td>
@@ -981,7 +978,6 @@
         }).join('');
     }
 
-    /* ===== NÓMINA DE TÉCNICOS ===== */
     function renderTecnicosList() {
         const data = getActiveData();
         const q = (document.getElementById('filterNominaTec').value || '').trim().toLowerCase();
@@ -1011,7 +1007,7 @@
         arr = sortByRule(arr, sortMode);
 
         document.getElementById('listaTecnicosBody').innerHTML = arr.map((t, i) => `
-            <tr onclick="abrirDetalleTecnico('${t.n}')">
+            <tr onclick="abrirDetalleTecnicoFullScreen('${t.n.replace(/'/g, "\\'")}')">
                 <td><strong>#${i + 1}</strong></td>
                 <td><strong>${t.n}</strong></td>
                 <td>${Array.from(t.meses).map(m => `<span class="pill-mes">${m}</span>`).join(' ')}</td>
@@ -1022,7 +1018,6 @@
             </tr>`).join('');
     }
 
-    /* ===== HISTÓRICO ===== */
     function renderHistorico() {
         const q = (document.getElementById('filterHistorico').value || '').trim().toLowerCase();
         const sortMode = document.getElementById('sortHistorico').value;
@@ -1052,7 +1047,6 @@
             </tr>`).join('');
     }
 
-    /* ===== BUSCADOR GLOBAL Y MODALES CON FILTRO PROPIO ===== */
     function ejecutarBusquedaGlobal(q) {
         q = q.trim().toLowerCase();
         const card = document.getElementById('searchResultCard');
@@ -1069,12 +1063,37 @@
         card.style.display = 'block';
         document.getElementById('searchResultTitle').innerHTML = `🔍 Resultados para "${q}" (${matches.length})`;
         document.getElementById('searchResultBody').innerHTML = `<table><thead><tr><th>Mes</th><th>Técnico</th><th>Código</th><th>Descripción</th><th>Virtual</th><th>Físico</th><th>Diferencia</th></tr></thead>
-            <tbody>${matches.map(r => `<tr onclick="abrirDetalleTecnico('${r.Tecnico}')"><td><span class="pill-mes">${r.Mes}</span></td><td><strong>${r.Tecnico}</strong></td><td><strong>${r.Codigo}</strong></td><td>${r.Descripcion}</td><td>${formatNumber(r.Virtual)}</td><td>${formatNumber(r.Fisico)}</td><td>${getPill(r.Diferencia)}</td></tr>`).join('')}</tbody></table>`;
+            <tbody>${matches.map(r => `<tr onclick="abrirDetalleTecnicoFullScreen('${r.Tecnico.replace(/'/g, "\\'")}')"><td><span class="pill-mes">${r.Mes}</span></td><td><strong>${r.Tecnico}</strong></td><td><strong>${r.Codigo}</strong></td><td>${r.Descripcion}</td><td>${formatNumber(r.Virtual)}</td><td>${formatNumber(r.Fisico)}</td><td>${getPill(r.Diferencia)}</td></tr>`).join('')}</tbody></table>`;
     }
     
     function limpiarBusqueda() { 
         document.getElementById('globalSearchInput').value = ''; 
         document.getElementById('searchResultCard').style.display = 'none'; 
+    }
+
+    function filtrarFaltantes() {
+        const rows = getActiveData().filter(r => (parseFloat(r.Diferencia) || 0) > 0.01);
+        abrirModalConFiltro(`🔴 Registros con Faltante`, rows, 'DIFF_ALL');
+    }
+    function filtrarSobrantes() {
+        const rows = getActiveData().filter(r => (parseFloat(r.Diferencia) || 0) < -0.01);
+        abrirModalConFiltro(`🟢 Registros con Sobrante`, rows, 'DIFF_ALL');
+    }
+    function filtrarCuadrados() {
+        const rows = getActiveData().filter(r => Math.abs(parseFloat(r.Diferencia) || 0) <= 0.01);
+        abrirModalConFiltro(`✅ Registros Cuadrados`, rows, 'DIFF_ALL');
+    }
+    function abrirCatalogoMateriales() {
+        const rows = getActiveData();
+        abrirModalConFiltro(`📦 Catálogo completo de materiales auditados`, rows, 'DIFF_ALL');
+    }
+
+    function mostrarDetalleEstadoMes(mes, estado) {
+        let rows, titulo;
+        if (estado === 'FALTANTE') { rows = db.filter(r => r.Mes === mes && (parseFloat(r.Diferencia) || 0) > 0.01); titulo = `🔴 Faltantes en ${mes}`; }
+        else if (estado === 'SOBRANTE') { rows = db.filter(r => r.Mes === mes && (parseFloat(r.Diferencia) || 0) < -0.01); titulo = `🟢 Sobrantes en ${mes}`; }
+        else { rows = db.filter(r => r.Mes === mes && Math.abs(parseFloat(r.Diferencia) || 0) <= 0.01); titulo = `✅ Cuadrados en ${mes}`; }
+        abrirModalConFiltro(titulo, rows, 'DIFF_ALL');
     }
 
     function abrirModalConFiltro(titulo, rows, type) {
@@ -1107,43 +1126,26 @@
         const q = (document.getElementById('modalSearchInput')?.value || '').trim().toLowerCase();
         const sortMode = document.getElementById('modalSortSelect')?.value || 'PRIORITY';
 
-        let filtered = modalCurrentRows.filter(r => {
-            if (!q) return true;
-            return JSON.stringify(r).toLowerCase().includes(q);
-        });
+        let filtered = modalCurrentRows.filter(r => !q || JSON.stringify(r).toLowerCase().includes(q));
         filtered = sortByRule(filtered, sortMode);
 
         const container = document.getElementById('modalTableContainer');
-        if (modalCurrentType === 'TECNICO') {
-            container.innerHTML = `<table><thead><tr><th>Mes</th><th>Código</th><th>Material</th><th>Virtual</th><th>Físico</th><th>Diferencia</th></tr></thead><tbody>` +
-                filtered.map(r => `<tr onclick="abrirDetalleCodigo('${r.Codigo}')"><td><span class="pill-mes">${r.Mes}</span></td><td><strong>${r.Codigo}</strong></td><td>${r.Descripcion}</td><td>${formatNumber(r.Virtual)}</td><td>${formatNumber(r.Fisico)}</td><td>${getPill(r.Diferencia)}</td></tr>`).join('') + `</tbody></table>`;
-        } else if (modalCurrentType === 'CODIGO') {
+        if (modalCurrentType === 'CODIGO') {
             container.innerHTML = `<table><thead><tr><th>Mes</th><th>Técnico</th><th>Virtual</th><th>Físico</th><th>Diferencia</th></tr></thead><tbody>` +
-                filtered.map(r => `<tr onclick="abrirDetalleTecnico('${r.Tecnico}')"><td><span class="pill-mes">${r.Mes}</span></td><td><strong>${r.Tecnico}</strong></td><td>${formatNumber(r.Virtual)}</td><td>${formatNumber(r.Fisico)}</td><td>${getPill(r.Diferencia)}</td></tr>`).join('') + `</tbody></table>`;
+                filtered.map(r => `<tr onclick="abrirDetalleTecnicoFullScreen('${r.Tecnico.replace(/'/g, "\\'")}')"><td><span class="pill-mes">${r.Mes}</span></td><td><strong>${r.Tecnico}</strong></td><td>${formatNumber(r.Virtual)}</td><td>${formatNumber(r.Fisico)}</td><td>${getPill(r.Diferencia)}</td></tr>`).join('') + `</tbody></table>`;
         } else if (modalCurrentType === 'DIFF_ALL') {
             container.innerHTML = `<table><thead><tr><th>Mes</th><th>Técnico</th><th>Código</th><th>Material</th><th>Virtual</th><th>Físico</th><th>Diferencia</th></tr></thead><tbody>` +
-                filtered.map(r => `<tr onclick="abrirDetalleTecnico('${r.Tecnico}')"><td><span class="pill-mes">${r.Mes}</span></td><td><strong>${r.Tecnico}</strong></td><td><strong>${r.Codigo}</strong></td><td>${r.Descripcion}</td><td>${formatNumber(r.Virtual)}</td><td>${formatNumber(r.Fisico)}</td><td>${getPill(r.Diferencia)}</td></tr>`).join('') + `</tbody></table>`;
+                filtered.map(r => `<tr onclick="abrirDetalleTecnicoFullScreen('${r.Tecnico.replace(/'/g, "\\'")}')"><td><span class="pill-mes">${r.Mes}</span></td><td><strong>${r.Tecnico}</strong></td><td><strong>${r.Codigo}</strong></td><td>${r.Descripcion}</td><td>${formatNumber(r.Virtual)}</td><td>${formatNumber(r.Fisico)}</td><td>${getPill(r.Diferencia)}</td></tr>`).join('') + `</tbody></table>`;
         } else if (modalCurrentType === 'TEC_SUMMARY') {
             container.innerHTML = `<table><thead><tr><th>Técnico</th><th>Ítems con Descuadre</th><th>Balance Neto</th></tr></thead><tbody>` +
-                filtered.map(t => `<tr onclick="abrirDetalleTecnico('${t.n}')"><td><strong>${t.n}</strong></td><td>${t.cD || 0}</td><td>${getPill(t.b)}</td></tr>`).join('') + `</tbody></table>`;
+                filtered.map(t => `<tr onclick="abrirDetalleTecnicoFullScreen('${t.n.replace(/'/g, "\\'")}')"><td><strong>${t.n}</strong></td><td>${t.cD || 0}</td><td>${getPill(t.b)}</td></tr>`).join('') + `</tbody></table>`;
         }
-    }
-
-    function abrirDetalleTecnico(nombre) {
-        const rows = getActiveData().filter(r => r.Tecnico === nombre);
-        if (!rows.length) return;
-        abrirModalConFiltro(`👤 Hoja de Auditoría: ${nombre}`, rows, 'TECNICO');
     }
 
     function abrirDetalleCodigo(codigo) {
         const rows = getActiveData().filter(r => r.Codigo === codigo);
         if (!rows.length) return;
         abrirModalConFiltro(`📦 ${codigo} · ${rows[0].Descripcion}`, rows, 'CODIGO');
-    }
-
-    function filtrarDiferencia() {
-        const rows = getActiveData().filter(r => Math.abs(r.Diferencia) > 0.01);
-        abrirModalConFiltro(`⚠️ Todos los Ítems con Descuadre`, rows, 'DIFF_ALL');
     }
 
     function filtrarTecnicosConDiff() {
@@ -1164,6 +1166,162 @@
         });
         const arr = Array.from(tecMap.values()).filter(t => !t.hasDiff);
         abrirModalConFiltro(`✅ Técnicos Cuadrados`, arr, 'TEC_SUMMARY');
+    }
+
+    function abrirDetalleTecnicoFullScreen(nombre) {
+        const rows = db.filter(r => r.Tecnico === nombre);
+        if (!rows.length) return;
+        cerrarModal();
+        fsCurrentTecnico = nombre;
+        const mesesTec = [...new Set(rows.map(r => r.Mes))];
+        fsSelectedMonths = new Set(mesesTec);
+        document.getElementById('fsTitle').innerHTML = `👤 ${nombre} · Comparador de Auditorías`;
+        document.getElementById('fullscreenPanel').classList.add('open');
+        renderFsTecnico();
+    }
+
+    function toggleFsMonth(mes, checked) {
+        if (checked) fsSelectedMonths.add(mes); else fsSelectedMonths.delete(mes);
+        renderFsTecnico();
+    }
+
+    function cerrarFullScreen() {
+        document.getElementById('fullscreenPanel').classList.remove('open');
+        fsCurrentTecnico = null;
+    }
+
+    function renderFsTecnico() {
+        const nombre = fsCurrentTecnico;
+        if (!nombre) return;
+        const allRows = db.filter(r => r.Tecnico === nombre);
+        const mesesTecnico = allMonths.filter(m => allRows.some(r => r.Mes === m));
+        const mesesSeleccionados = mesesTecnico.filter(m => fsSelectedMonths.has(m));
+        const rows = allRows.filter(r => fsSelectedMonths.has(r.Mes));
+
+        const monthsHtml = mesesTecnico.map(m => {
+            const checked = fsSelectedMonths.has(m);
+            return `<label class="month-check-label ${checked ? 'checked' : ''}">
+                <input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleFsMonth('${m}', this.checked)">
+                <span>📅 ${m}</span>
+            </label>`;
+        }).join('');
+
+        const summaryHtml = mesesSeleccionados.map(m => {
+            const monthRows = rows.filter(r => r.Mes === m);
+            const falt = monthRows.filter(r => (parseFloat(r.Diferencia) || 0) > 0.01).length;
+            const sobr = monthRows.filter(r => (parseFloat(r.Diferencia) || 0) < -0.01).length;
+            const cuad = monthRows.filter(r => Math.abs(parseFloat(r.Diferencia) || 0) <= 0.01).length;
+            return `
+                <div class="summary-box" style="cursor:default; background:#f8fafc;">
+                    <div>
+                        <div style="font-weight:700; font-size:14px;">📅 ${m}</div>
+                        <div style="font-size:12px; color:var(--text-muted);">${monthRows.length} registros</div>
+                    </div>
+                    <div style="display:flex; gap:10px; font-size:12px; font-weight:700;">
+                        <span style="color:var(--danger);">🔴 ${falt}</span>
+                        <span style="color:var(--success);">🟢 ${sobr}</span>
+                        <span style="color:#475569;">✅ ${cuad}</span>
+                    </div>
+                </div>`;
+        }).join('') || '<p style="color:var(--text-muted);">Selecciona al menos un mes</p>';
+
+        const matMap = new Map();
+        rows.forEach(r => {
+            if (!matMap.has(r.Codigo)) {
+                matMap.set(r.Codigo, { c: r.Codigo, d: r.Descripcion, byMonth: {} });
+            }
+            const m = matMap.get(r.Codigo);
+            m.byMonth[r.Mes] = (m.byMonth[r.Mes] || 0) + (parseFloat(r.Diferencia) || 0);
+        });
+
+        const matArr = Array.from(matMap.values()).map(m => ({
+            ...m,
+            b: mesesSeleccionados.reduce((s, mes) => s + (m.byMonth[mes] || 0), 0)
+        }));
+        const sortedMats = sortByRule(matArr, 'PRIORITY');
+
+        const monthHeaders = mesesSeleccionados.map(m => `<th>${m}</th>`).join('');
+
+        const bodyHtml = sortedMats.map(m => {
+            const monthCells = mesesSeleccionados.map(mes => {
+                const val = m.byMonth[mes];
+                return `<td>${val === undefined ? '<span style="color:#cbd5e1;">—</span>' : getPill(val)}</td>`;
+            }).join('');
+
+            const conDatos = mesesSeleccionados.filter(mes => m.byMonth[mes] !== undefined);
+            let evol = '<span style="color:#94a3b8;">—</span>';
+            if (conDatos.length >= 2) {
+                const firstVal = m.byMonth[conDatos[0]];
+                const lastVal = m.byMonth[conDatos[conDatos.length - 1]];
+                const firstZero = Math.abs(firstVal) <= 0.01;
+                const lastZero = Math.abs(lastVal) <= 0.01;
+                if (!firstZero && lastZero) evol = '<span style="color:var(--success); font-weight:700;">✅ Corregido</span>';
+                else if (firstZero && !lastZero) evol = '<span style="color:var(--danger); font-weight:700;">🚨 Nuevo descuadre</span>';
+                else if (!firstZero && !lastZero && Math.sign(firstVal) !== Math.sign(lastVal)) evol = '<span style="color:var(--warning); font-weight:700;">🔄 Cambió tipo</span>';
+                else if (!firstZero && !lastZero && Math.abs(lastVal) > Math.abs(firstVal)) evol = '<span style="color:var(--danger); font-weight:700;">📉 Empeoró</span>';
+                else if (!firstZero && !lastZero && Math.abs(lastVal) < Math.abs(firstVal)) evol = '<span style="color:var(--success); font-weight:700;">📈 Mejoró</span>';
+                else evol = '<span style="color:var(--text-muted);">⚠️ Sin cambio</span>';
+            }
+
+            return `<tr onclick="abrirDetalleCodigo('${m.c}')">
+                <td><strong>${m.c}</strong></td>
+                <td>${m.d}</td>
+                ${monthCells}
+                <td>${getPill(m.b)}</td>
+                <td>${evol}</td>
+            </tr>`;
+        }).join('');
+
+        const tableHtml = mesesSeleccionados.length > 0
+            ? `<table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Material</th>
+                        ${monthHeaders}
+                        <th>Balance Seleccionado</th>
+                        <th>Evolución</th>
+                    </tr>
+                </thead>
+                <tbody>${bodyHtml || '<tr><td colspan="99" style="text-align:center; color:var(--text-muted); padding:20px;">Sin materiales para los meses seleccionados</td></tr>'}</tbody>
+            </table>`
+            : '<p style="color:var(--text-muted); padding:20px; text-align:center;">Selecciona al menos un mes arriba para ver el comparador</p>';
+
+        document.getElementById('fsBody').innerHTML = `
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">📅 Períodos a comparar</div>
+                        <div class="card-subtitle">Marca o desmarca los meses. Solo aparecen los meses donde este técnico tiene registros</div>
+                    </div>
+                </div>
+                <div class="month-checkboxes">${monthsHtml || '<p style="color:var(--text-muted);">Este técnico no tiene meses registrados</p>'}</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">📊 Resumen por Mes</div>
+                        <div class="card-subtitle">Cantidad de ítems en cada estado por período seleccionado</div>
+                    </div>
+                </div>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:14px;">
+                    ${summaryHtml}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">📋 Comparador de Materiales Mes a Mes</div>
+                        <div class="card-subtitle">Cada fila = un material · cada columna = un mes · Evolución = del primero al último mes con datos</div>
+                    </div>
+                </div>
+                <div class="table-wrapper" style="max-height:none;">
+                    ${tableHtml}
+                </div>
+            </div>
+        `;
     }
 
     loadData();

@@ -79,10 +79,8 @@
         .card-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
         .card-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
         
-        /* GRID PARA LA SECCIÓN DE TÉCNICOS EN RESUMEN */
         .grid-tech-summary { display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 22px; margin-bottom: 22px; align-items: stretch; }
         @media (max-width: 1100px) { .grid-tech-summary { grid-template-columns: 1fr; } }
-
         .grid-equal { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
         @media (max-width: 960px) { .grid-equal { grid-template-columns: 1fr; } }
 
@@ -100,7 +98,6 @@
         .summary-box.ok-box:hover { background: #dcfce7; }
         .summary-box .num { font-size: 26px; font-weight: 800; }
 
-        /* Lista vertical de técnicos (AHORA SIN SCROLL INTERNO) */
         .tec-list { display: flex; flex-direction: column; gap: 8px; padding-right: 4px; }
         .tec-list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; background: white; border: 1px solid var(--border); border-radius: 12px; cursor: pointer; transition: 0.15s; gap: 12px; }
         .tec-list-item:hover { border-color: var(--primary); background: var(--primary-light); transform: translateX(4px); }
@@ -108,19 +105,35 @@
         .tec-list-item .tec-name { font-weight: 700; font-size: 14px; }
         .tec-list-item .tec-stats { font-size: 12px; color: var(--text-muted); }
 
-        /* Panel Donut y Críticos */
         .donut-container { position: relative; height: 220px; width: 100%; display: flex; justify-content: center; margin-bottom: 15px; }
         .crit-list { display: flex; flex-direction: column; gap: 8px; }
         .crit-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; cursor: pointer; transition: 0.15s; }
         .crit-item:hover { background: var(--primary-light); border-color: var(--primary); }
         .crit-title { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
 
-        /* ===== SELECTOR MULTI-MES ===== */
+        /* ===== SELECTOR MULTI-MES / TECNICOS ===== */
         .month-checkboxes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
         .month-check-label { display: inline-flex; align-items: center; gap: 6px; padding: 6px 13px; border-radius: 20px; border: 1px solid var(--border); background: #f8fafc; font-size: 13px; font-weight: 600; cursor: pointer; user-select: none; transition: 0.15s; }
         .month-check-label:hover { border-color: var(--primary); }
         .month-check-label input:checked + span { color: var(--primary); font-weight: 700; }
         .month-check-label.checked { background: var(--primary-light); border-color: var(--primary); color: var(--primary-dark); }
+
+        /* Custom Dropdown para Técnicos en BI */
+        .custom-dropdown { position: relative; flex: 1; min-width: 250px; }
+        .custom-dropdown-btn { width: 100%; padding: 8px 14px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 13.5px; font-weight: 600; color: var(--text-main); background: #f8fafc; cursor: pointer; text-align: left; display: flex; justify-content: space-between; align-items: center; }
+        .custom-dropdown-btn:hover { border-color: var(--primary); }
+        .custom-dropdown-menu { position: absolute; top: 110%; left: 0; right: 0; background: white; border: 1px solid var(--border); border-radius: 10px; max-height: 300px; overflow-y: auto; z-index: 100; box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 8px; display: none; }
+        .custom-dropdown-menu.open { display: block; }
+        .tech-check-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; transition: 0.1s; border-bottom: 1px solid #f1f5f9; }
+        .tech-check-item:last-child { border-bottom: none; }
+        .tech-check-item:hover { background: #f8fafc; }
+        .tech-check-item input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--primary); }
+        .tech-check-label { flex: 1; display: flex; justify-content: space-between; align-items: center; gap: 10px; cursor: pointer; }
+        .tech-check-name { font-weight: 600; color: var(--text-main); }
+        
+        .dropdown-actions { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+        .dropdown-actions button { font-size: 12px; font-weight: 700; color: var(--primary); background: none; border: none; cursor: pointer; }
+        .dropdown-actions button:hover { text-decoration: underline; }
 
         /* ===== TABLAS ===== */
         .table-wrapper { overflow-x: auto; max-height: 460px; overflow-y: auto; }
@@ -243,7 +256,7 @@
         <div class="kpi-grid" id="kpiContainer"></div>
 
         <div class="grid-tech-summary">
-            <!-- Columna Izquierda: Lista de Técnicos (Ocupa toda la altura) -->
+            <!-- Columna Izquierda: Lista de Técnicos -->
             <div class="card" style="margin-bottom:0; display:flex; flex-direction:column;">
                 <div class="card-header">
                     <div>
@@ -272,7 +285,6 @@
 
             <!-- Columna Derecha: Ranking y Materiales apilados -->
             <div style="display:flex; flex-direction:column; gap:22px;">
-                <!-- Ranking de Técnicos -->
                 <div class="card" style="margin-bottom:0;">
                     <div class="card-header">
                         <div>
@@ -299,7 +311,6 @@
                     <div class="chart-box"><canvas id="tecnicosChart"></canvas></div>
                 </div>
 
-                <!-- Materiales por Prioridad -->
                 <div class="card" style="margin-bottom:0; flex:1;">
                     <div class="card-header">
                         <div>
@@ -345,7 +356,7 @@
         </div>
 
         <div class="grid-equal">
-            <!-- Balance del Período (Movido desde Resumen) -->
+            <!-- Balance del Período -->
             <div class="card" style="margin-bottom:0; display:flex; flex-direction:column;">
                 <div class="card-header">
                     <div>
@@ -371,17 +382,31 @@
             </div>
         </div>
 
+        <!-- Evolución por Material y Técnico (MODIFICADO) -->
         <div class="card">
             <div class="card-header">
                 <div>
                     <div class="card-title">📈 Evolución de un Material por Técnico Responsable</div>
-                    <div class="card-subtitle">Selecciona un material y verás una línea por cada técnico que lo tiene a cargo. Comparas siempre la misma unidad (metros con metros, equipos con equipos)</div>
+                    <div class="card-subtitle">Selecciona un material y filtra los técnicos que deseas ver. Comparas siempre la misma unidad (metros con metros, equipos con equipos)</div>
                 </div>
             </div>
-            <div class="table-toolbar" style="margin-bottom:16px;">
+            <div class="table-toolbar" style="margin-bottom:16px; align-items: flex-start;">
+                <!-- Selector de Material -->
                 <div class="filter-group" style="flex:1; min-width:250px;">
-                    <label>📦 Material a Analizar:</label>
-                    <select id="matEvolSelect1" class="filter-select" style="width:100%;" onchange="renderMaterialEvolucion()"></select>
+                    <label style="margin-top:8px;">📦 Material:</label>
+                    <select id="matEvolSelect1" class="filter-select" style="width:100%;" onchange="onMaterialChange()"></select>
+                </div>
+                
+                <!-- Selector de Técnicos (Custom Dropdown) -->
+                <div class="filter-group" style="flex:1; min-width:300px;">
+                    <label style="margin-top:8px;">👥 Técnicos:</label>
+                    <div class="custom-dropdown" id="techDropdownContainer">
+                        <button id="techDropdownBtn" class="custom-dropdown-btn" onclick="toggleTechDropdown(event)">
+                            <span id="techDropdownText">Cargando...</span>
+                            <span style="font-size:10px; color:var(--text-muted);">▼</span>
+                        </button>
+                        <div id="techDropdownMenu" class="custom-dropdown-menu"></div>
+                    </div>
                 </div>
             </div>
             <div class="chart-box-large" style="height:340px;"><canvas id="matEvolucionChart"></canvas></div>
@@ -511,6 +536,10 @@
 
     let fsCurrentTecnico = null;
     let fsSelectedMonths = new Set();
+
+    // Variables para el selector de técnicos en BI
+    let evSelectedTechs = new Set();
+    let evCurrentTechList = []; // Guarda la lista calculada y ordenada para el material actual
 
     function formatNumber(num) {
         const n = parseFloat(num) || 0;
@@ -642,6 +671,9 @@
         renderBIMonthCheckboxes();
         document.getElementById('loadingOverlay').style.display = 'none';
         renderGlobal();
+        
+        // Inicializar el selector de técnicos la primera vez
+        onMaterialChange();
     }
 
     function renderBIMonthCheckboxes() {
@@ -739,7 +771,7 @@
             </div>
         `).join('');
 
-        // --- GRÁFICO DONUT Y TOP 3 CRÍTICOS (Ahora renderizados en la pestaña BI, pero generados aquí) ---
+        // --- GRÁFICO DONUT Y TOP 3 CRÍTICOS (Ahora renderizados en la pestaña BI) ---
         if (charts.donutEstado) charts.donutEstado.destroy();
         charts.donutEstado = new Chart(document.getElementById('donutEstadoChart'), {
             type: 'doughnut',
@@ -804,7 +836,6 @@
     function renderResumenTables() {
         const data = getActiveData();
 
-        // Tabla Materiales (ahora a la derecha)
         const matMap = new Map();
         data.forEach(r => {
             if (!matMap.has(r.Codigo)) matMap.set(r.Codigo, { c: r.Codigo, d: r.Descripcion, b: 0 });
@@ -821,7 +852,6 @@
                 <td><strong>${m.c}</strong></td><td>${m.d}</td><td>${getPill(m.b)}</td>
             </tr>`).join('');
 
-        // Tabla Técnicos (ahora arriba a la derecha)
         const tecMap = new Map();
         data.forEach(r => {
             if (!tecMap.has(r.Tecnico)) tecMap.set(r.Tecnico, { nombre: r.Tecnico, b: 0, cD: 0 });
@@ -860,8 +890,6 @@
         const activeMonths = allMonths.filter(m => biSelectedMonths.has(m));
         const biData = db.filter(r => biSelectedMonths.has(r.Mes));
 
-        // NOTA: Se eliminó el gráfico "fugasSobrasChart" porque fue reemplazado por "Balance del Período".
-
         const matMap = new Map();
         biData.forEach(r => {
             if (!matMap.has(r.Codigo)) matMap.set(r.Codigo, { c: r.Codigo, d: r.Descripcion, b: 0 });
@@ -893,21 +921,132 @@
         renderCatalogoBI();
     }
 
+    // === LÓGICA DEL NUEVO SELECTOR DE TÉCNICOS ===
+    function toggleTechDropdown(event) {
+        event.stopPropagation();
+        const menu = document.getElementById('techDropdownMenu');
+        menu.classList.toggle('open');
+    }
+
+    // Cerrar dropdown al hacer clic fuera
+    document.addEventListener('click', function(event) {
+        const container = document.getElementById('techDropdownContainer');
+        const menu = document.getElementById('techDropdownMenu');
+        if (container && !container.contains(event.target)) {
+            menu.classList.remove('open');
+        }
+    });
+
+    function onMaterialChange() {
+        const cod = document.getElementById('matEvolSelect1').value;
+        if (!cod) return;
+
+        // Encontrar todos los tecnicos que tienen este material y su ultima auditoria
+        const techMap = new Map();
+        db.filter(r => r.Codigo === cod).forEach(r => {
+            if (!techMap.has(r.Tecnico)) techMap.set(r.Tecnico, { nombre: r.Tecnico, ultimaFecha: '', diffUltima: 0 });
+            
+            // Buscar el índice del mes para saber cuál es el más reciente
+            const idxMes = allMonths.indexOf(r.Mes);
+            let t = techMap.get(r.Tecnico);
+            
+            // Si es un mes más reciente o si es el primero que encontramos
+            if (t.ultimaFecha === '' || idxMes > allMonths.indexOf(t.ultimaFecha)) {
+                t.ultimaFecha = r.Mes;
+                t.diffUltima = parseFloat(r.Diferencia) || 0;
+            }
+        });
+
+        evCurrentTechList = Array.from(techMap.values());
+        
+        // Ordenar por la regla de oro usando la diferencia de la última fecha
+        evCurrentTechList = sortByRule(evCurrentTechList.map(t => ({...t, b: t.diffUltima})), 'PRIORITY');
+
+        // Por defecto, seleccionar todos
+        evSelectedTechs = new Set(evCurrentTechList.map(t => t.nombre));
+
+        renderTechDropdown();
+        renderMaterialEvolucion();
+    }
+
+    function renderTechDropdown() {
+        const menu = document.getElementById('techDropdownMenu');
+        const btnText = document.getElementById('techDropdownText');
+
+        const allChecked = evSelectedTechs.size === evCurrentTechList.length;
+        btnText.textContent = allChecked ? 'Todos los técnicos' : `${evSelectedTechs.size} técnico(s) seleccionado(s)`;
+
+        let html = `
+            <div class="dropdown-actions">
+                <button onclick="toggleAllTechs(true)">Seleccionar Todos</button>
+                <button onclick="toggleAllTechs(false)">Limpiar</button>
+            </div>
+        `;
+
+        html += evCurrentTechList.map(t => {
+            const isChecked = evSelectedTechs.has(t.nombre);
+            let diffText = '';
+            if (Math.abs(t.diffUltima) < 0.01) diffText = '<span class="pill pill-ok" style="font-size:10px; padding:2px 6px;">✅ Cuadrado</span>';
+            else if (t.diffUltima > 0) diffText = `<span class="pill pill-faltante" style="font-size:10px; padding:2px 6px;">🔴 Faltan ${formatNumber(t.diffUltima)}</span>`;
+            else diffText = `<span class="pill pill-sobrante" style="font-size:10px; padding:2px 6px;">🟢 Sobran ${formatNumber(Math.abs(t.diffUltima))}</span>`;
+
+            return `
+                <div class="tech-check-item" onclick="toggleTechSelection('${t.nombre.replace(/'/g, "\\'")}', event)">
+                    <input type="checkbox" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation()" onchange="toggleTechSelection('${t.nombre.replace(/'/g, "\\'")}')">
+                    <div class="tech-check-label">
+                        <span class="tech-check-name">${t.nombre}</span>
+                        ${diffText}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        menu.innerHTML = html;
+    }
+
+    function toggleTechSelection(nombre, event) {
+        if (event) event.stopPropagation();
+        if (evSelectedTechs.has(nombre)) {
+            evSelectedTechs.delete(nombre);
+        } else {
+            evSelectedTechs.add(nombre);
+        }
+        renderTechDropdown();
+        renderMaterialEvolucion();
+    }
+
+    function toggleAllTechs(selectAll) {
+        if (selectAll) {
+            evSelectedTechs = new Set(evCurrentTechList.map(t => t.nombre));
+        } else {
+            evSelectedTechs.clear();
+        }
+        renderTechDropdown();
+        renderMaterialEvolucion();
+    }
+
+    // === GRÁFICA DE EVOLUCIÓN ===
     function renderMaterialEvolucion() {
         const cod = document.getElementById('matEvolSelect1').value;
         const activeMonths = allMonths.filter(m => biSelectedMonths.has(m));
-        if (!cod || activeMonths.length === 0) return;
+        
+        if (!cod || activeMonths.length === 0) {
+            if (charts.matEvol) charts.matEvol.destroy();
+            return;
+        }
 
-        const techsForMat = [...new Set(db.filter(r => r.Codigo === cod).map(r => r.Tecnico))].sort();
         const colors = ['#dc2626', '#1d6f9c', '#16a34a', '#d97706', '#7c3aed', '#0891b2', '#be185d', '#65a30d', '#a16207', '#0d9488', '#9333ea', '#db2777'];
 
-        const datasets = techsForMat.map((tec, i) => {
+        // Filtrar solo los técnicos seleccionados
+        const techsToRender = evCurrentTechList.filter(t => evSelectedTechs.has(t.nombre));
+
+        const datasets = techsToRender.map((t, i) => {
             const serie = activeMonths.map(m => {
-                return db.filter(r => r.Mes === m && r.Codigo === cod && r.Tecnico === tec)
+                return db.filter(r => r.Mes === m && r.Codigo === cod && r.Tecnico === t.nombre)
                     .reduce((s, r) => s + (parseFloat(r.Diferencia) || 0), 0);
             });
             return {
-                label: tec,
+                label: t.nombre,
                 data: serie,
                 borderColor: colors[i % colors.length],
                 backgroundColor: 'transparent',
@@ -925,7 +1064,24 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { position: 'bottom' } },
+                plugins: { 
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) label += ': ';
+                                if (context.parsed.y !== null) {
+                                    const val = context.parsed.y;
+                                    if (Math.abs(val) < 0.01) label += '✅ Cuadrado';
+                                    else if (val > 0) label += `🔴 Faltan ${formatNumber(val)}`;
+                                    else label += `🟢 Sobran ${formatNumber(Math.abs(val))}`;
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
                 scales: { y: { title: { display: true, text: 'Diferencia (positivo = falta, negativo = sobra)' } } }
             }
         });
@@ -1086,14 +1242,6 @@
     function abrirCatalogoMateriales() {
         const rows = getActiveData();
         abrirModalConFiltro(`📦 Catálogo completo de materiales auditados`, rows, 'DIFF_ALL');
-    }
-
-    function mostrarDetalleEstadoMes(mes, estado) {
-        let rows, titulo;
-        if (estado === 'FALTANTE') { rows = db.filter(r => r.Mes === mes && (parseFloat(r.Diferencia) || 0) > 0.01); titulo = `🔴 Faltantes en ${mes}`; }
-        else if (estado === 'SOBRANTE') { rows = db.filter(r => r.Mes === mes && (parseFloat(r.Diferencia) || 0) < -0.01); titulo = `🟢 Sobrantes en ${mes}`; }
-        else { rows = db.filter(r => r.Mes === mes && Math.abs(parseFloat(r.Diferencia) || 0) <= 0.01); titulo = `✅ Cuadrados en ${mes}`; }
-        abrirModalConFiltro(titulo, rows, 'DIFF_ALL');
     }
 
     function abrirModalConFiltro(titulo, rows, type) {
